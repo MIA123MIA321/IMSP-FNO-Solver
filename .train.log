@@ -1,0 +1,292 @@
+nohup: ignoring input
+Epoch [1/500], train: (71.7,)%, test: (43.83,)%, Time per epoch: 6.4559
+Epoch [10/500], train: (4.47,)%, test: (4.21,)%, Time per epoch: 6.1574
+Epoch [20/500], train: (3.13,)%, test: (3.04,)%, Time per epoch: 6.3886
+Epoch [30/500], train: (2.69,)%, test: (2.71,)%, Time per epoch: 6.4951
+Epoch [40/500], train: (2.48,)%, test: (2.2,)%, Time per epoch: 6.8118
+Epoch [50/500], train: (2.31,)%, test: (2.28,)%, Time per epoch: 6.4984
+Epoch [60/500], train: (2.02,)%, test: (2.07,)%, Time per epoch: 6.7550
+Epoch [70/500], train: (2.01,)%, test: (1.84,)%, Time per epoch: 6.7094
+Epoch [80/500], train: (1.83,)%, test: (1.81,)%, Time per epoch: 6.8516
+Epoch [90/500], train: (1.77,)%, test: (1.75,)%, Time per epoch: 6.9648
+Epoch [100/500], train: (1.7,)%, test: (2.09,)%, Time per epoch: 6.8952
+Epoch [110/500], train: (1.58,)%, test: (1.48,)%, Time per epoch: 6.8401
+Epoch [120/500], train: (1.53,)%, test: (1.44,)%, Time per epoch: 6.9438
+Epoch [130/500], train: (1.56,)%, test: (1.63,)%, Time per epoch: 7.5637
+Epoch [140/500], train: (1.49,)%, test: (1.44,)%, Time per epoch: 6.6981
+Epoch [150/500], train: (1.4,)%, test: (1.31,)%, Time per epoch: 6.9559
+Epoch [160/500], train: (1.32,)%, test: (1.31,)%, Time per epoch: 6.4244
+Epoch [170/500], train: (1.48,)%, test: (1.37,)%, Time per epoch: 6.3866
+Epoch [180/500], train: (1.23,)%, test: (1.31,)%, Time per epoch: 6.4488
+Epoch [190/500], train: (1.22,)%, test: (1.2,)%, Time per epoch: 6.4861
+Epoch [200/500], train: (1.16,)%, test: (1.22,)%, Time per epoch: 6.7444
+Epoch [210/500], train: (1.22,)%, test: (1.08,)%, Time per epoch: 6.4301
+Epoch [220/500], train: (1.21,)%, test: (1.08,)%, Time per epoch: 6.5578
+Epoch [230/500], train: (1.52,)%, test: (1.23,)%, Time per epoch: 6.4112
+Epoch [240/500], train: (1.11,)%, test: (1.01,)%, Time per epoch: 6.4591
+Epoch [250/500], train: (0.89,)%, test: (0.86,)%, Time per epoch: 6.4261
+Epoch [260/500], train: (0.82,)%, test: (0.89,)%, Time per epoch: 6.4825
+Epoch [270/500], train: (0.79,)%, test: (0.97,)%, Time per epoch: 6.4571
+Epoch [280/500], train: (0.95,)%, test: (0.91,)%, Time per epoch: 6.4011
+Epoch [290/500], train: (0.86,)%, test: (0.76,)%, Time per epoch: 6.4432
+Epoch [300/500], train: (0.67,)%, test: (0.78,)%, Time per epoch: 6.6700
+Epoch [310/500], train: (0.68,)%, test: (0.79,)%, Time per epoch: 6.4095
+Epoch [320/500], train: (0.69,)%, test: (0.69,)%, Time per epoch: 6.4848
+Epoch [330/500], train: (0.63,)%, test: (0.65,)%, Time per epoch: 6.4290
+Epoch [340/500], train: (0.62,)%, test: (0.64,)%, Time per epoch: 6.5192
+Epoch [350/500], train: (0.64,)%, test: (0.63,)%, Time per epoch: 6.6987
+Epoch [360/500], train: (0.6,)%, test: (0.73,)%, Time per epoch: 6.4998
+Epoch [370/500], train: (0.6,)%, test: (0.63,)%, Time per epoch: 6.5772
+Epoch [380/500], train: (0.51,)%, test: (0.57,)%, Time per epoch: 6.5517
+Epoch [390/500], train: (0.51,)%, test: (0.57,)%, Time per epoch: 6.4828
+Epoch [400/500], train: (0.48,)%, test: (0.55,)%, Time per epoch: 6.5096
+Epoch [410/500], train: (0.47,)%, test: (0.52,)%, Time per epoch: 6.4871
+Epoch [420/500], train: (0.45,)%, test: (0.5,)%, Time per epoch: 6.4497
+Epoch [430/500], train: (0.44,)%, test: (0.48,)%, Time per epoch: 6.5012
+Epoch [440/500], train: (0.42,)%, test: (0.48,)%, Time per epoch: 6.2989
+Epoch [450/500], train: (0.41,)%, test: (0.46,)%, Time per epoch: 6.2254
+Epoch [460/500], train: (0.41,)%, test: (0.46,)%, Time per epoch: 6.4812
+Epoch [470/500], train: (0.4,)%, test: (0.45,)%, Time per epoch: 6.4455
+Epoch [480/500], train: (0.39,)%, test: (0.45,)%, Time per epoch: 6.4620
+Epoch [490/500], train: (0.39,)%, test: (0.44,)%, Time per epoch: 7.6756
+Epoch [500/500], train: (0.39,)%, test: (0.44,)%, Time per epoch: 7.2253
+Epoch [1/200], train: (0.48, 0.98)%, test: (0.45, 0.78)%, Time per epoch: 14.2357
+Epoch [10/200], train: (0.41, 0.84)%, test: (0.46, 0.79)%, Time per epoch: 14.1040
+Epoch [20/200], train: (0.41, 0.84)%, test: (0.45, 0.78)%, Time per epoch: 13.3775
+Epoch [30/200], train: (0.41, 0.83)%, test: (0.45, 0.78)%, Time per epoch: 12.8225
+Epoch [40/200], train: (0.4, 0.82)%, test: (0.45, 0.77)%, Time per epoch: 12.7768
+Epoch [50/200], train: (0.4, 0.81)%, test: (0.44, 0.76)%, Time per epoch: 12.9243
+Epoch [60/200], train: (0.4, 0.81)%, test: (0.44, 0.76)%, Time per epoch: 12.7554
+Epoch [70/200], train: (0.39, 0.79)%, test: (0.43, 0.75)%, Time per epoch: 12.9838
+Epoch [80/200], train: (0.38, 0.78)%, test: (0.43, 0.73)%, Time per epoch: 12.8001
+Epoch [90/200], train: (0.38, 0.77)%, test: (0.42, 0.72)%, Time per epoch: 12.7922
+Epoch [100/200], train: (0.37, 0.76)%, test: (0.42, 0.71)%, Time per epoch: 12.4556
+Epoch [110/200], train: (0.37, 0.75)%, test: (0.41, 0.7)%, Time per epoch: 12.3000
+Epoch [120/200], train: (0.37, 0.74)%, test: (0.41, 0.69)%, Time per epoch: 12.3979
+Epoch [130/200], train: (0.36, 0.73)%, test: (0.41, 0.68)%, Time per epoch: 12.3226
+Epoch [140/200], train: (0.36, 0.72)%, test: (0.4, 0.67)%, Time per epoch: 12.3332
+Epoch [150/200], train: (0.36, 0.71)%, test: (0.4, 0.66)%, Time per epoch: 12.4390
+Epoch [160/200], train: (0.35, 0.7)%, test: (0.4, 0.66)%, Time per epoch: 12.4423
+Epoch [170/200], train: (0.35, 0.7)%, test: (0.39, 0.65)%, Time per epoch: 12.3464
+Epoch [180/200], train: (0.35, 0.69)%, test: (0.39, 0.64)%, Time per epoch: 12.3448
+Epoch [190/200], train: (0.35, 0.69)%, test: (0.39, 0.64)%, Time per epoch: 12.3067
+Epoch [200/200], train: (0.35, 0.68)%, test: (0.39, 0.64)%, Time per epoch: 12.3302
+nohup: ignoring input
+Epoch [1/500], train: (87.46,)%, test: (74.43,)%, Time per epoch: 12.4151
+Epoch [10/500], train: (18.1,)%, test: (18.67,)%, Time per epoch: 12.3709
+Epoch [20/500], train: (11.9,)%, test: (12.99,)%, Time per epoch: 12.4023
+Epoch [30/500], train: (10.02,)%, test: (11.45,)%, Time per epoch: 12.7237
+Epoch [40/500], train: (8.45,)%, test: (9.57,)%, Time per epoch: 12.7369
+Epoch [50/500], train: (7.81,)%, test: (9.06,)%, Time per epoch: 12.8300
+Epoch [60/500], train: (7.25,)%, test: (8.17,)%, Time per epoch: 12.7172
+Epoch [70/500], train: (6.32,)%, test: (7.61,)%, Time per epoch: 12.8277
+Epoch [80/500], train: (5.82,)%, test: (6.71,)%, Time per epoch: 12.6281
+Epoch [90/500], train: (5.63,)%, test: (6.83,)%, Time per epoch: 12.5605
+Epoch [100/500], train: (5.21,)%, test: (6.25,)%, Time per epoch: 12.7384
+Epoch [110/500], train: (4.81,)%, test: (5.64,)%, Time per epoch: 12.6749
+Epoch [120/500], train: (4.67,)%, test: (5.45,)%, Time per epoch: 12.6181
+Epoch [130/500], train: (4.6,)%, test: (5.51,)%, Time per epoch: 12.8282
+Epoch [140/500], train: (4.26,)%, test: (4.94,)%, Time per epoch: 12.3937
+Epoch [150/500], train: (4.04,)%, test: (4.73,)%, Time per epoch: 12.4848
+Epoch [160/500], train: (3.89,)%, test: (4.46,)%, Time per epoch: 12.4658
+Epoch [170/500], train: (3.67,)%, test: (4.23,)%, Time per epoch: 12.4017
+Epoch [180/500], train: (3.52,)%, test: (4.06,)%, Time per epoch: 12.3398
+Epoch [190/500], train: (3.42,)%, test: (3.88,)%, Time per epoch: 12.3339
+Epoch [200/500], train: (3.27,)%, test: (4.34,)%, Time per epoch: 12.4991
+Epoch [210/500], train: (3.13,)%, test: (3.63,)%, Time per epoch: 12.5349
+Epoch [220/500], train: (3.03,)%, test: (3.38,)%, Time per epoch: 12.3718
+Epoch [230/500], train: (3.02,)%, test: (3.54,)%, Time per epoch: 12.4473
+Epoch [240/500], train: (2.87,)%, test: (4.25,)%, Time per epoch: 12.4277
+Epoch [250/500], train: (2.74,)%, test: (3.11,)%, Time per epoch: 12.4633
+Epoch [260/500], train: (2.7,)%, test: (3.03,)%, Time per epoch: 12.4088
+Epoch [270/500], train: (2.62,)%, test: (2.99,)%, Time per epoch: 12.9670
+Epoch [280/500], train: (2.51,)%, test: (2.77,)%, Time per epoch: 12.9442
+Epoch [290/500], train: (2.4,)%, test: (2.73,)%, Time per epoch: 12.4046
+Epoch [300/500], train: (2.45,)%, test: (2.77,)%, Time per epoch: 12.3527
+Epoch [310/500], train: (2.31,)%, test: (2.6,)%, Time per epoch: 12.5075
+Epoch [320/500], train: (2.19,)%, test: (2.45,)%, Time per epoch: 12.3590
+Epoch [330/500], train: (2.13,)%, test: (2.4,)%, Time per epoch: 12.5616
+Epoch [340/500], train: (2.09,)%, test: (2.36,)%, Time per epoch: 12.6427
+Epoch [350/500], train: (2.1,)%, test: (2.29,)%, Time per epoch: 12.5913
+Epoch [360/500], train: (2.03,)%, test: (2.24,)%, Time per epoch: 12.5690
+Epoch [370/500], train: (2.0,)%, test: (2.19,)%, Time per epoch: 12.3846
+Epoch [380/500], train: (1.93,)%, test: (2.12,)%, Time per epoch: 12.4662
+Epoch [390/500], train: (1.88,)%, test: (2.07,)%, Time per epoch: 12.8590
+Epoch [400/500], train: (1.85,)%, test: (2.04,)%, Time per epoch: 12.3482
+Epoch [410/500], train: (1.81,)%, test: (2.0,)%, Time per epoch: 12.4037
+Epoch [420/500], train: (1.79,)%, test: (1.97,)%, Time per epoch: 12.3552
+Epoch [430/500], train: (1.77,)%, test: (1.95,)%, Time per epoch: 12.3453
+Epoch [440/500], train: (1.75,)%, test: (1.92,)%, Time per epoch: 12.7997
+Epoch [450/500], train: (1.73,)%, test: (1.9,)%, Time per epoch: 12.5880
+Epoch [460/500], train: (1.72,)%, test: (1.89,)%, Time per epoch: 12.6139
+Epoch [470/500], train: (1.71,)%, test: (1.88,)%, Time per epoch: 12.4717
+Epoch [480/500], train: (1.7,)%, test: (1.87,)%, Time per epoch: 12.4740
+Epoch [490/500], train: (1.7,)%, test: (1.86,)%, Time per epoch: 12.4590
+Epoch [500/500], train: (1.69,)%, test: (1.86,)%, Time per epoch: 12.5762
+Epoch [1/200], train: (1.86, 3.58)%, test: (1.88, 3.08)%, Time per epoch: 24.9042
+Epoch [10/200], train: (1.72, 3.1)%, test: (1.88, 3.1)%, Time per epoch: 24.9700
+Epoch [20/200], train: (1.71, 3.08)%, test: (1.87, 3.08)%, Time per epoch: 24.9549
+Epoch [30/200], train: (1.7, 3.06)%, test: (1.86, 3.05)%, Time per epoch: 25.0154
+Epoch [40/200], train: (1.69, 3.04)%, test: (1.85, 3.03)%, Time per epoch: 27.0040
+Epoch [50/200], train: (1.68, 3.01)%, test: (1.83, 3.01)%, Time per epoch: 26.1047
+Epoch [60/200], train: (1.67, 2.99)%, test: (1.82, 2.98)%, Time per epoch: 24.9186
+Epoch [70/200], train: (1.66, 2.97)%, test: (1.81, 2.95)%, Time per epoch: 25.1022
+Epoch [80/200], train: (1.65, 2.94)%, test: (1.8, 2.92)%, Time per epoch: 24.7963
+Epoch [90/200], train: (1.64, 2.91)%, test: (1.79, 2.9)%, Time per epoch: 24.8696
+Epoch [100/200], train: (1.63, 2.88)%, test: (1.78, 2.87)%, Time per epoch: 24.8415
+Epoch [110/200], train: (1.63, 2.86)%, test: (1.77, 2.83)%, Time per epoch: 24.8467
+Epoch [120/200], train: (1.62, 2.83)%, test: (1.76, 2.81)%, Time per epoch: 24.9011
+Epoch [130/200], train: (1.61, 2.81)%, test: (1.75, 2.79)%, Time per epoch: 24.7928
+Epoch [140/200], train: (1.61, 2.79)%, test: (1.74, 2.77)%, Time per epoch: 24.8030
+Epoch [150/200], train: (1.6, 2.78)%, test: (1.74, 2.75)%, Time per epoch: 24.8762
+Epoch [160/200], train: (1.6, 2.76)%, test: (1.73, 2.74)%, Time per epoch: 24.7241
+Epoch [170/200], train: (1.59, 2.75)%, test: (1.73, 2.72)%, Time per epoch: 24.8163
+Epoch [180/200], train: (1.59, 2.73)%, test: (1.73, 2.71)%, Time per epoch: 24.7718
+Epoch [190/200], train: (1.59, 2.72)%, test: (1.72, 2.7)%, Time per epoch: 24.8766
+Epoch [200/200], train: (1.59, 2.71)%, test: (1.72, 2.69)%, Time per epoch: 25.7814
+nohup: ignoring input
+Epoch [1/500], train: (129.2,)%, test: (83.34,)%, Time per epoch: 6.2923
+Epoch [10/500], train: (17.87,)%, test: (14.66,)%, Time per epoch: 6.2420
+Epoch [20/500], train: (14.59,)%, test: (12.14,)%, Time per epoch: 6.1787
+Epoch [30/500], train: (13.19,)%, test: (21.49,)%, Time per epoch: 6.1863
+Epoch [40/500], train: (10.06,)%, test: (15.7,)%, Time per epoch: 6.1817
+Epoch [50/500], train: (10.23,)%, test: (14.62,)%, Time per epoch: 6.2053
+Epoch [60/500], train: (12.13,)%, test: (15.87,)%, Time per epoch: 6.1704
+Epoch [70/500], train: (7.94,)%, test: (8.48,)%, Time per epoch: 6.1674
+Epoch [80/500], train: (7.16,)%, test: (8.4,)%, Time per epoch: 6.1339
+Epoch [90/500], train: (5.1,)%, test: (5.5,)%, Time per epoch: 6.1668
+Epoch [100/500], train: (6.96,)%, test: (9.92,)%, Time per epoch: 6.4746
+Epoch [110/500], train: (5.17,)%, test: (5.62,)%, Time per epoch: 6.5499
+Epoch [120/500], train: (4.42,)%, test: (4.45,)%, Time per epoch: 6.3985
+Epoch [130/500], train: (4.93,)%, test: (2.4,)%, Time per epoch: 6.4455
+Epoch [140/500], train: (4.28,)%, test: (2.72,)%, Time per epoch: 6.3256
+Epoch [150/500], train: (4.36,)%, test: (4.3,)%, Time per epoch: 6.3801
+Epoch [160/500], train: (3.67,)%, test: (4.32,)%, Time per epoch: 6.2461
+Epoch [170/500], train: (3.09,)%, test: (2.79,)%, Time per epoch: 6.2259
+Epoch [180/500], train: (2.86,)%, test: (3.83,)%, Time per epoch: 6.1608
+Epoch [190/500], train: (3.28,)%, test: (3.38,)%, Time per epoch: 6.2031
+Epoch [200/500], train: (3.72,)%, test: (2.73,)%, Time per epoch: 6.5557
+Epoch [210/500], train: (2.52,)%, test: (1.6,)%, Time per epoch: 6.5343
+Epoch [220/500], train: (2.9,)%, test: (2.29,)%, Time per epoch: 6.4191
+Epoch [230/500], train: (2.03,)%, test: (2.94,)%, Time per epoch: 6.2286
+Epoch [240/500], train: (2.14,)%, test: (2.32,)%, Time per epoch: 6.1907
+Epoch [250/500], train: (1.68,)%, test: (1.38,)%, Time per epoch: 6.7500
+Epoch [260/500], train: (2.13,)%, test: (2.16,)%, Time per epoch: 6.5489
+Epoch [270/500], train: (1.97,)%, test: (1.36,)%, Time per epoch: 6.1833
+Epoch [280/500], train: (1.96,)%, test: (1.45,)%, Time per epoch: 6.2223
+Epoch [290/500], train: (1.92,)%, test: (1.69,)%, Time per epoch: 6.2208
+Epoch [300/500], train: (1.5,)%, test: (1.52,)%, Time per epoch: 6.2047
+Epoch [310/500], train: (1.57,)%, test: (1.29,)%, Time per epoch: 6.2086
+Epoch [320/500], train: (1.87,)%, test: (1.36,)%, Time per epoch: 6.1775
+Epoch [330/500], train: (1.0,)%, test: (1.05,)%, Time per epoch: 6.1726
+Epoch [340/500], train: (1.15,)%, test: (1.44,)%, Time per epoch: 6.2172
+Epoch [350/500], train: (1.12,)%, test: (0.94,)%, Time per epoch: 6.1946
+Epoch [360/500], train: (0.86,)%, test: (1.05,)%, Time per epoch: 6.2433
+Epoch [370/500], train: (0.68,)%, test: (1.19,)%, Time per epoch: 6.1907
+Epoch [380/500], train: (0.94,)%, test: (1.93,)%, Time per epoch: 6.1923
+Epoch [390/500], train: (0.51,)%, test: (0.64,)%, Time per epoch: 6.2300
+Epoch [400/500], train: (0.61,)%, test: (0.65,)%, Time per epoch: 6.1860
+Epoch [410/500], train: (0.57,)%, test: (0.67,)%, Time per epoch: 6.1984
+Epoch [420/500], train: (0.52,)%, test: (0.77,)%, Time per epoch: 6.1754
+Epoch [430/500], train: (0.46,)%, test: (0.73,)%, Time per epoch: 6.1987
+Epoch [440/500], train: (0.42,)%, test: (0.57,)%, Time per epoch: 6.1884
+Epoch [450/500], train: (0.38,)%, test: (0.54,)%, Time per epoch: 6.1704
+Epoch [460/500], train: (0.37,)%, test: (0.55,)%, Time per epoch: 6.1837
+Epoch [470/500], train: (0.35,)%, test: (0.51,)%, Time per epoch: 6.2357
+Epoch [480/500], train: (0.33,)%, test: (0.48,)%, Time per epoch: 6.2483
+Epoch [490/500], train: (0.32,)%, test: (0.48,)%, Time per epoch: 6.3102
+Epoch [500/500], train: (0.32,)%, test: (0.47,)%, Time per epoch: 6.2863
+Epoch [1/200], train: (0.68, 0.82)%, test: (0.52, 0.43)%, Time per epoch: 12.2669
+Epoch [10/200], train: (0.4, 0.45)%, test: (0.51, 0.41)%, Time per epoch: 12.2866
+Epoch [20/200], train: (0.41, 0.48)%, test: (0.73, 0.88)%, Time per epoch: 12.3297
+Epoch [30/200], train: (0.4, 0.46)%, test: (0.59, 0.62)%, Time per epoch: 12.4694
+Epoch [40/200], train: (0.37, 0.42)%, test: (0.49, 0.38)%, Time per epoch: 12.3431
+Epoch [50/200], train: (0.37, 0.43)%, test: (0.52, 0.46)%, Time per epoch: 12.4188
+Epoch [60/200], train: (0.38, 0.45)%, test: (0.56, 0.57)%, Time per epoch: 12.2489
+Epoch [70/200], train: (0.39, 0.45)%, test: (0.52, 0.5)%, Time per epoch: 14.3691
+Epoch [80/200], train: (0.33, 0.38)%, test: (0.48, 0.42)%, Time per epoch: 12.5757
+Epoch [90/200], train: (0.34, 0.39)%, test: (0.54, 0.55)%, Time per epoch: 12.3139
+Epoch [100/200], train: (0.34, 0.39)%, test: (0.49, 0.43)%, Time per epoch: 12.2929
+Epoch [110/200], train: (0.32, 0.35)%, test: (0.47, 0.39)%, Time per epoch: 12.2683
+Epoch [120/200], train: (0.32, 0.35)%, test: (0.47, 0.4)%, Time per epoch: 12.2372
+Epoch [130/200], train: (0.3, 0.33)%, test: (0.45, 0.37)%, Time per epoch: 12.3071
+Epoch [140/200], train: (0.3, 0.33)%, test: (0.43, 0.32)%, Time per epoch: 12.4155
+Epoch [150/200], train: (0.29, 0.31)%, test: (0.43, 0.33)%, Time per epoch: 14.4067
+Epoch [160/200], train: (0.29, 0.3)%, test: (0.43, 0.33)%, Time per epoch: 12.4119
+Epoch [170/200], train: (0.28, 0.3)%, test: (0.41, 0.31)%, Time per epoch: 12.3068
+Epoch [180/200], train: (0.27, 0.28)%, test: (0.41, 0.29)%, Time per epoch: 15.2529
+Epoch [190/200], train: (0.27, 0.28)%, test: (0.4, 0.29)%, Time per epoch: 14.4001
+Epoch [200/200], train: (0.27, 0.28)%, test: (0.4, 0.29)%, Time per epoch: 12.7389
+nohup: ignoring input
+Epoch [1/500], train: (74.35,)%, test: (43.45,)%, Time per epoch: 12.8034
+Epoch [10/500], train: (5.32,)%, test: (4.93,)%, Time per epoch: 13.0405
+Epoch [20/500], train: (3.42,)%, test: (4.24,)%, Time per epoch: 13.2408
+Epoch [30/500], train: (2.86,)%, test: (3.11,)%, Time per epoch: 13.1298
+Epoch [40/500], train: (2.55,)%, test: (2.92,)%, Time per epoch: 14.4150
+Epoch [50/500], train: (2.27,)%, test: (2.43,)%, Time per epoch: 12.6030
+Epoch [60/500], train: (2.29,)%, test: (2.11,)%, Time per epoch: 12.6467
+Epoch [70/500], train: (2.18,)%, test: (2.35,)%, Time per epoch: 12.6399
+Epoch [80/500], train: (1.9,)%, test: (2.18,)%, Time per epoch: 12.5759
+Epoch [90/500], train: (1.8,)%, test: (1.99,)%, Time per epoch: 14.5076
+Epoch [100/500], train: (1.68,)%, test: (2.1,)%, Time per epoch: 13.3047
+Epoch [110/500], train: (1.63,)%, test: (1.59,)%, Time per epoch: 12.6856
+Epoch [120/500], train: (1.52,)%, test: (1.82,)%, Time per epoch: 12.6185
+Epoch [130/500], train: (1.49,)%, test: (1.47,)%, Time per epoch: 12.8469
+Epoch [140/500], train: (1.43,)%, test: (1.6,)%, Time per epoch: 13.4496
+Epoch [150/500], train: (1.49,)%, test: (1.69,)%, Time per epoch: 13.4275
+Epoch [160/500], train: (1.29,)%, test: (1.49,)%, Time per epoch: 14.1261
+Epoch [170/500], train: (1.28,)%, test: (1.23,)%, Time per epoch: 12.5713
+Epoch [180/500], train: (1.33,)%, test: (1.39,)%, Time per epoch: 13.6418
+Epoch [190/500], train: (1.21,)%, test: (1.5,)%, Time per epoch: 12.7159
+Epoch [200/500], train: (1.08,)%, test: (1.1,)%, Time per epoch: 14.3977
+Epoch [210/500], train: (1.07,)%, test: (1.03,)%, Time per epoch: 12.7043
+Epoch [220/500], train: (1.09,)%, test: (1.09,)%, Time per epoch: 13.9539
+Epoch [230/500], train: (0.98,)%, test: (0.96,)%, Time per epoch: 14.2018
+Epoch [240/500], train: (1.03,)%, test: (1.08,)%, Time per epoch: 12.6460
+Epoch [250/500], train: (0.95,)%, test: (1.06,)%, Time per epoch: 13.5309
+Epoch [260/500], train: (0.86,)%, test: (0.88,)%, Time per epoch: 14.1841
+Epoch [270/500], train: (0.85,)%, test: (0.87,)%, Time per epoch: 12.6030
+Epoch [280/500], train: (0.77,)%, test: (0.96,)%, Time per epoch: 13.9817
+Epoch [290/500], train: (0.76,)%, test: (0.74,)%, Time per epoch: 13.4645
+Epoch [300/500], train: (0.8,)%, test: (0.85,)%, Time per epoch: 13.0307
+Epoch [310/500], train: (0.68,)%, test: (0.71,)%, Time per epoch: 12.7044
+Epoch [320/500], train: (0.62,)%, test: (0.72,)%, Time per epoch: 12.9147
+Epoch [330/500], train: (0.61,)%, test: (0.68,)%, Time per epoch: 13.6847
+Epoch [340/500], train: (0.6,)%, test: (0.65,)%, Time per epoch: 13.5659
+Epoch [350/500], train: (0.57,)%, test: (0.6,)%, Time per epoch: 12.8426
+Epoch [360/500], train: (0.53,)%, test: (0.56,)%, Time per epoch: 14.2824
+Epoch [370/500], train: (0.51,)%, test: (0.54,)%, Time per epoch: 13.7284
+Epoch [380/500], train: (0.49,)%, test: (0.52,)%, Time per epoch: 12.5583
+Epoch [390/500], train: (0.48,)%, test: (0.51,)%, Time per epoch: 12.7561
+Epoch [400/500], train: (0.48,)%, test: (0.57,)%, Time per epoch: 12.8255
+Epoch [410/500], train: (0.45,)%, test: (0.49,)%, Time per epoch: 12.7917
+Epoch [420/500], train: (0.43,)%, test: (0.47,)%, Time per epoch: 12.6928
+Epoch [430/500], train: (0.42,)%, test: (0.46,)%, Time per epoch: 12.7533
+Epoch [440/500], train: (0.41,)%, test: (0.45,)%, Time per epoch: 12.5759
+Epoch [450/500], train: (0.4,)%, test: (0.44,)%, Time per epoch: 12.7326
+Epoch [460/500], train: (0.4,)%, test: (0.44,)%, Time per epoch: 12.7386
+Epoch [470/500], train: (0.39,)%, test: (0.43,)%, Time per epoch: 12.8481
+Epoch [480/500], train: (0.39,)%, test: (0.43,)%, Time per epoch: 12.7193
+Epoch [490/500], train: (0.39,)%, test: (0.43,)%, Time per epoch: 12.6283
+Epoch [500/500], train: (0.39,)%, test: (0.43,)%, Time per epoch: 12.6579
+Epoch [1/200], train: (0.5, 0.98)%, test: (0.43, 0.76)%, Time per epoch: 25.3760
+Epoch [10/200], train: (0.41, 0.8)%, test: (0.44, 0.78)%, Time per epoch: 25.3355
+Epoch [20/200], train: (0.4, 0.79)%, test: (0.44, 0.78)%, Time per epoch: 25.4527
+Epoch [30/200], train: (0.4, 0.79)%, test: (0.43, 0.77)%, Time per epoch: 25.4735
+Epoch [40/200], train: (0.4, 0.78)%, test: (0.43, 0.76)%, Time per epoch: 25.4153
+Epoch [50/200], train: (0.39, 0.78)%, test: (0.43, 0.75)%, Time per epoch: 25.4851
+Epoch [60/200], train: (0.39, 0.77)%, test: (0.42, 0.75)%, Time per epoch: 25.2738
+Epoch [70/200], train: (0.39, 0.76)%, test: (0.42, 0.74)%, Time per epoch: 25.3395
+Epoch [80/200], train: (0.38, 0.75)%, test: (0.41, 0.73)%, Time per epoch: 25.2245
+Epoch [90/200], train: (0.38, 0.74)%, test: (0.41, 0.72)%, Time per epoch: 25.3647
+Epoch [100/200], train: (0.37, 0.73)%, test: (0.4, 0.7)%, Time per epoch: 25.3412
+Epoch [110/200], train: (0.37, 0.72)%, test: (0.4, 0.7)%, Time per epoch: 25.4545
+Epoch [120/200], train: (0.37, 0.72)%, test: (0.4, 0.69)%, Time per epoch: 25.3985
+Epoch [130/200], train: (0.36, 0.71)%, test: (0.39, 0.68)%, Time per epoch: 25.2456
+Epoch [140/200], train: (0.36, 0.7)%, test: (0.39, 0.68)%, Time per epoch: 25.2616
+Epoch [150/200], train: (0.36, 0.7)%, test: (0.39, 0.67)%, Time per epoch: 25.4424
+Epoch [160/200], train: (0.36, 0.69)%, test: (0.39, 0.66)%, Time per epoch: 25.3315
+Epoch [170/200], train: (0.36, 0.69)%, test: (0.39, 0.66)%, Time per epoch: 25.5011
+Epoch [180/200], train: (0.35, 0.68)%, test: (0.39, 0.66)%, Time per epoch: 25.4650
+Epoch [190/200], train: (0.35, 0.68)%, test: (0.38, 0.65)%, Time per epoch: 25.2622
+Epoch [200/200], train: (0.35, 0.68)%, test: (0.38, 0.65)%, Time per epoch: 25.2675

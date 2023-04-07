@@ -1,0 +1,188 @@
+
+Data loading             2023-04-06 20:18:37
+Data loading completed   2023-04-06 20:18:39
+value
+value
+prime
+value
+prime
+iter 1 completed         2023-04-06 20:18:48
+value
+prime
+iter 2 completed         2023-04-06 20:18:52
+value
+prime
+iter 3 completed         2023-04-06 20:18:56
+value
+prime
+iter 4 completed         2023-04-06 20:19:00
+value
+prime
+iter 5 completed         2023-04-06 20:19:04
+value
+prime
+iter 6 completed         2023-04-06 20:19:07
+value
+prime
+iter 7 completed         2023-04-06 20:19:11
+value
+prime
+iter 8 completed         2023-04-06 20:19:15
+value
+prime
+iter 9 completed         2023-04-06 20:19:19
+value
+prime
+iter 10 completed        2023-04-06 20:19:23
+value
+prime
+iter 11 completed        2023-04-06 20:19:27
+value
+prime
+iter 12 completed        2023-04-06 20:19:30
+value
+prime
+iter 13 completed        2023-04-06 20:19:34
+value
+prime
+iter 14 completed        2023-04-06 20:19:38
+value
+prime
+iter 15 completed        2023-04-06 20:19:42
+value
+prime
+iter 16 completed        2023-04-06 20:19:46
+value
+prime
+iter 17 completed        2023-04-06 20:19:50
+value
+prime
+iter 18 completed        2023-04-06 20:19:53
+value
+prime
+iter 19 completed        2023-04-06 20:19:57
+value
+prime
+iter 20 completed        2023-04-06 20:20:01
+value
+prime
+iter 21 completed        2023-04-06 20:20:05
+value
+prime
+iter 22 completed        2023-04-06 20:20:09
+value
+prime
+iter 23 completed        2023-04-06 20:20:13
+value
+prime
+value
+prime
+iter 24 completed        2023-04-06 20:20:21
+value
+prime
+iter 25 completed        2023-04-06 20:20:24
+value
+prime
+iter 26 completed        2023-04-06 20:20:28
+value
+prime
+iter 27 completed        2023-04-06 20:20:32
+value
+prime
+iter 28 completed        2023-04-06 20:20:36
+value
+prime
+iter 29 completed        2023-04-06 20:20:40
+value
+prime
+iter 30 completed        2023-04-06 20:20:44
+value
+ This problem is unconstrained.
+RUNNING THE L-BFGS-B CODE
+
+           * * *
+
+Machine precision = 2.220D-16
+ N =         4225     M =           10
+
+At X0         0 variables are exactly at the bounds
+
+At iterate    0    f=  4.37837D+00    |proj g|=  1.08901D-01
+
+At iterate    1    f=  2.81502D+00    |proj g|=  8.84747D-02
+
+At iterate    2    f=  4.88032D-01    |proj g|=  3.21598D-02
+
+At iterate    3    f=  1.04693D-01    |proj g|=  1.67797D-02
+
+At iterate    4    f=  1.99493D-02    |proj g|=  8.52506D-03
+
+At iterate    5    f=  5.62693D-03    |proj g|=  5.19657D-03
+
+At iterate    6    f=  1.16284D-03    |proj g|=  1.42399D-03
+
+At iterate    7    f=  4.81378D-04    |proj g|=  8.99013D-04
+
+At iterate    8    f=  5.54102D-05    |proj g|=  2.53436D-04
+
+At iterate    9    f=  3.91539D-05    |proj g|=  1.52268D-04
+
+At iterate   10    f=  2.30818D-05    |proj g|=  1.03620D-04
+
+At iterate   11    f=  1.90856D-05    |proj g|=  8.47680D-05
+
+At iterate   12    f=  1.53407D-05    |proj g|=  6.17225D-05
+
+At iterate   13    f=  1.10285D-05    |proj g|=  3.73838D-05
+
+At iterate   14    f=  7.29247D-06    |proj g|=  6.82025D-05
+
+At iterate   15    f=  6.00460D-06    |proj g|=  6.22172D-05
+
+At iterate   16    f=  4.51391D-06    |proj g|=  3.40103D-05
+
+At iterate   17    f=  4.09287D-06    |proj g|=  2.58959D-05
+
+At iterate   18    f=  3.48568D-06    |proj g|=  2.86876D-05
+
+At iterate   19    f=  2.96208D-06    |proj g|=  2.60287D-05
+
+At iterate   20    f=  2.64596D-06    |proj g|=  1.92029D-05
+
+At iterate   21    f=  2.32560D-06    |proj g|=  1.80685D-05
+
+At iterate   22    f=  2.12959D-06    |proj g|=  1.69960D-05
+
+At iterate   23    f=  1.72133D-06    |proj g|=  1.31420D-05
+
+At iterate   24    f=  1.58739D-06    |proj g|=  1.55575D-05
+
+At iterate   25    f=  1.34834D-06    |proj g|=  1.35747D-05
+
+At iterate   26    f=  1.19088D-06    |proj g|=  1.30505D-05
+
+At iterate   27    f=  1.06575D-06    |proj g|=  1.00681D-05
+
+At iterate   28    f=  9.66467D-07    |proj g|=  8.80055D-06
+
+At iterate   29    f=  8.90109D-07    |proj g|=  1.08037D-05
+
+At iterate   30    f=  8.49850D-07    |proj g|=  7.84453D-06
+
+           * * *
+
+Tit   = total number of iterations
+Tnf   = total number of function evaluations
+Tnint = total number of segments explored during Cauchy searches
+Skip  = number of BFGS updates skipped
+Nact  = number of active bounds at final generalized Cauchy point
+Projg = norm of the final projected gradient
+F     = final function value
+
+           * * *
+
+   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
+ 4225     30     32      1     0     0   7.845D-06   8.498D-07
+  F =   8.4984991352525731E-007
+
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT                 
