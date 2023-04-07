@@ -1,1 +1,1 @@
-# FNO-Solver-for-IMSP
+# IMSP-FNO-Solver
