@@ -78,20 +78,25 @@ else:
 f_data = (f_data, f_data_torch)
 partial_data = (partial_data,partial_data_torch)
 matrix_A = (matrix_A,matrix_A_torch)
-args1 = (N, partial_data, k, f_data, matrix_A, maxq, NET, device, NS_length)
+args1 = (N, partial_data, k, f_data, matrix_A, maxq, NET, device, NS_length, True)
+args2 = (N, partial_data, k, f_data, matrix_A, maxq, NET, device, NS_length, False)
+J00 = J_MULTI(Q0,*args2)
+Jtt = J_MULTI(Q,*args2)
+J_rel = Jtt/J00
 print('Data loading completed   %s' % str(datetime.now())[:-7])  
 
 if forward_solver == 'NET':
-    ftol = 1e-5 * J_MULTI(Q0,*args1)
+    ftol = 1e-5 * J00
 else:
-    ftol = 1e-10 * J_MULTI(Q0,*args1)
+    ftol = 1e-10 * J00
 X_list.append(Q0)
 t0 = time.time()
-RES2 = SOLVE(J_MULTI,Q0=Q0,args=args1,jac=J_MULTIPRIME,
+RES2 = SOLVE(J_MULTI,Q0=Q0,args=args1,jac=True,
             options={'disp': True,'gtol': gtol,
                      'maxiter': maxiter,'ftol':ftol},
             method='L-BFGS-B')
-time_avg = (time.time() - t0) / len(X_list)
+time_total = time.time() - t0
+time_avg = time_total / len(X_list)
 ll = len(X_list)
 plot_list, label_list, Error_list = [], [], []
 for j in range(ll):
@@ -108,13 +113,18 @@ print('****************************************************************', file=f
 print('%s' % str(datetime.now())[:-7], file = fp)
 print('Solver={}'.format(forward_solver), file = fp)
 print('N={},m={},k={}'.format(N, m, k), file = fp)
-print('gtol={},maxiter={}'.format(gtol, maxiter), file = fp)
 print('q_method={},maxq={}'.format(q_method, maxq), file = fp)
-print('noise_level={}'.format(noise_level), file = fp)
-print('total_iter={},t_avg={:.2f}'.format(len(X_list[1:]), time_avg), file = fp)
+print('gtol={},noise_level={}'.format(gtol, noise_level), file = fp)
+print('-----------------------------', file = fp)
+print('total_iter={},max_iter={}'.format(len(X_list[1:]), maxiter), file = fp)
+print('t_avg={:.2f},t_total={:.2f}'.format(time_avg, time_total), file = fp)
+print('-----------------------------', file = fp)
 print('relative_model_error:', file = fp)
 print(Error_list, file = fp)
-print('J(qt)={}'.format(J_MULTI(Q,*args1)), file = fp)
+print('-----------------------------', file = fp)
+print('J(qt)={}'.format(Jtt), file = fp)
+print('J(q0)={}'.format(J00), file = fp)
+print('J(qt)/J(q0)={}'.format(J_rel), file = fp)
 percent_list = [str(round(Error_list[i]*100,2))+'%' for i in range(len(Error_list))]
 percent_list[0] = ''
 label_list[0] = 'Init'

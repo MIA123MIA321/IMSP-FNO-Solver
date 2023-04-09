@@ -48,10 +48,10 @@ TMP_PATH='.tmp.log'
 RES_DIR=${DIR}'pic/res/'
 
 echo > ${OUTPUT_LOG} &&
-Opt '20' 'NET' &&
 Opt '20' 'MUMPS' &&
-Opt '40' 'NET' &&
+Opt '20' 'NET' &&
 Opt '40' 'MUMPS' &&
+Opt '40' 'NET' &&
 
 
 python ${DRAW_PATH} \
