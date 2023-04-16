@@ -6,24 +6,24 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--PROJECT_DIR', type = str, default = '/data/liuziyang/Programs/pde_solver/')
 parser.add_argument('--N', type = int, default = 64)
+parser.add_argument('--N_comp', type = str)
 parser.add_argument('--k', type = str, default = '2')
 parser.add_argument('--m', type=int, default = 16)
 parser.add_argument('--maxq', type=float, default = 0.1)
 parser.add_argument('--q_method', type=str, default = 'T')
 parser.add_argument('--noise_level', type=float, default = 0.0)
 parser.add_argument('--gtol', type = float, default = 1e-10)
-parser.add_argument('--maxiter', type = int, default = 30)
+parser.add_argument('--maxiter', type = int, default = 12)
 parser.add_argument('--forward_solver', type=str, default = 'NET')
 parser.add_argument('--title', type = str, default = 'tmp')
 parser.add_argument('--output_filename', type = str, required=True)
-parser.add_argument('--Net_name', type = str,default = '')
 parser.add_argument('--NS_length', type = int, default = 3)
 args = parser.parse_args()
-
-print('Data loading             %s' % str(datetime.now())[:-7])
+print('Pre data loading'+'         '+str(datetime.now())[:-7])
 PROJECT_DIR = args.PROJECT_DIR
 sys.path.append(PROJECT_DIR)
 N = args.N
+N_comp = args.N_comp
 k = args.k
 m = args.m
 maxq = args.maxq
@@ -34,69 +34,76 @@ maxiter = args.maxiter
 forward_solver = args.forward_solver
 title = args.title
 output_filename = args.output_filename
-Net_name = args.Net_name
 NS_length = args.NS_length
 
 jpgdir = PROJECT_DIR + 'pic/process_jpg/'
 gifdir = PROJECT_DIR + 'pic/process_gif/'
 Netdir = PROJECT_DIR + 'Network/'
-
-if isinstance(k,str):
+suffix = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
+pic_list = [0, 1, 2, 5, -2, -1]
+if isinstance(k+'',str):
     tmp_k = k.split(',')
-    k = [float(eval(item)) for item in tmp_k]
-k_len = len(k)
+    k_list = [int(eval(item)) for item in tmp_k]
+k_len = len(k_list)
+N_comp_list = [int(eval(item)) for item in N_comp.split(',')]
+forward_solver_list = (forward_solver+'').split(',')
+assert len(forward_solver_list) == k_len
+assert len(N_comp_list) == k_len
 
-if forward_solver == 'NET':
-    NET = torch.load( Netdir + Net_name + '.pth', map_location = device)
-    pic_list = [0, 1, 2, 5, -2, -1]
-elif forward_solver == 'MUMPS':
-    NET = None
-    pic_list = [0, 1, 2, 5, 10, -2, -1]
-    
+
 q = q_gen(N, q_method, maxq)
 Q = q.reshape(-1, )
-Q0 = Q*0
-matrix_A = gen_A(N)
-Matrix_analysis(N)
-f_data = np.zeros((k_len,m,(N+1)**2),dtype = np.complex128)
-partial_data = np.zeros((k_len,m,4*N-4),dtype = np.complex128)
-for j in range(k_len):
-    f_data[j] = f_gen(N, k[j], m)
-    partial_data[j] = pdata_gen(N, Q, k[j], f_data[j], matrix_A,noise_level)
+N_gen = 256
+q_gen = q_gen(N_gen, q_method, maxq)
+Q_gen = q_gen.reshape(-1,)
+f_data_np, partial_data_np = data_gen(Q_gen, N_gen, N, k_list, m, 0.0)
+f_data_list, partial_data_list = [], []
+NET_list = []
+for i in range(k_len):
+    if forward_solver_list[i] == 'NET':
+        NET_list.append(torch.load(Netdir+'k{}'.format(k_list[i])+suffix, map_location = device))
+        f_data_list.append(torch.stack([torch.from_numpy(f_data_np[i].real).to(torch.float32).to(device),
+                               torch.from_numpy(f_data_np[i].imag).to(torch.float32).to(device)],1))
+        partial_data_list.append(torch.stack([torch.from_numpy(partial_data_np[i].real).to(torch.float32).to(device),
+                        torch.from_numpy(partial_data_np[i].imag).to(torch.float32).to(device)],1))
+    elif forward_solver_list[i] == 'MUMPS':
+        NET_list.append(None)
+        f_data_list.append(f_data_np[i])
+        partial_data_list.append(partial_data_np[i])
 
-if forward_solver == 'NET':
-    f_data_torch = torch.stack([torch.from_numpy(f_data.reshape(k_len,m,(N+1),(N+1)).real).to(torch.float32).to(device),
-                               torch.from_numpy(f_data.reshape(k_len,m,(N+1),(N+1)).imag).to(torch.float32).to(device)],2)
-    partial_data_torch = torch.stack([torch.from_numpy(partial_data.reshape(k_len,m,4*N-4).real).to(torch.float32).to(device),
-                               torch.from_numpy(partial_data.reshape(k_len,m,4*N-4).imag).to(torch.float32).to(device)],2)
-    matrix_A_torch = torch.from_numpy(matrix_A).to(torch.float32).to(device)
-    matrix_A_torch = matrix_A_torch.unsqueeze(0).unsqueeze(1).repeat(m,2,1,1)
-else:
-    f_data_torch = None
-    partial_data_torch = None
-    matrix_A_torch = None
-f_data = (f_data, f_data_torch)
-partial_data = (partial_data,partial_data_torch)
-matrix_A = (matrix_A,matrix_A_torch)
-args1 = (N, partial_data, k, f_data, matrix_A, maxq, NET, device, NS_length, True)
-args2 = (N, partial_data, k, f_data, matrix_A, maxq, NET, device, NS_length, False)
-J00 = J_MULTI(Q0,*args2)
-Jtt = J_MULTI(Q,*args2)
-J_rel = Jtt/J00
-print('Data loading completed   %s' % str(datetime.now())[:-7])  
+    else:
+        raise ValueError("Solver Error")
+print('Pre data completed'+'       '+str(datetime.now())[:-7])
 
-if forward_solver == 'NET':
+Q0 = None
+total_time = 0.
+J_rel_str = ''
+time_total_str = ''
+J00_str = ''
+Jtt_str = ''
+for i in range(k_len):
+    if Q0 is None:
+        Q0 = Q * 0
+    X_list.append(Q0)
+    Matrix_analysis(N_comp_list[i])
+    args1 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, True)
+    args2 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, False)
+    J00 = J_single_frequency(Q0, *args2)
+    Jtt = J_single_frequency(Q, *args2)
+    J00_str += str(J00)[:5]+','
+    Jtt_str += str(Jtt)[:5]+','
+    print('********************************************')
+    print('Process {}'.format(i)+'                '+str(datetime.now())[:-7])
+    J_rel_str += str(Jtt/J00)[:5]+','
     ftol = 1e-5 * J00
-else:
-    ftol = 1e-10 * J00
-X_list.append(Q0)
-t0 = time.time()
-RES2 = SOLVE(J_MULTI,Q0=Q0,args=args1,jac=True,
+    t0 = time.time()
+    _,Q0 = SOLVE(J_single_frequency,Q0=Q0,args=args1,jac=True,
             options={'disp': True,'gtol': gtol,
                      'maxiter': maxiter,'ftol':ftol},
             method='L-BFGS-B')
-time_total = time.time() - t0
-time_avg = time_total / len(X_list)
+    time_total = time.time() - t0
+    time_total_str += str(time_total)[:5]+','
+
 ll = len(X_list)
 plot_list, label_list, Error_list = [], [], []
 for j in range(ll):
@@ -112,19 +119,17 @@ print('****************************************************************', file=f
 print('****************************************************************', file=fp)
 print('%s' % str(datetime.now())[:-7], file = fp)
 print('Solver={}'.format(forward_solver), file = fp)
-print('N={},m={},k={}'.format(N, m, k), file = fp)
-print('q_method={},maxq={}'.format(q_method, maxq), file = fp)
-print('gtol={},noise_level={}'.format(gtol, noise_level), file = fp)
-print('-----------------------------', file = fp)
-print('total_iter={},max_iter={}'.format(len(X_list[1:]), maxiter), file = fp)
-print('t_avg={:.2f},t_total={:.2f}'.format(time_avg, time_total), file = fp)
+print('N={}  N_comp={}  m={}  k={}'.format(N, N_comp, m, k), file = fp)
+print('q_method={}  maxq={}  max_iter={}'.format(q_method, maxq, maxiter), file = fp)
+print('gtol={}  noise_level={}'.format(gtol, noise_level), file = fp)
 print('-----------------------------', file = fp)
 print('relative_model_error:', file = fp)
 print(Error_list, file = fp)
+print('t_total={}'.format(time_total_str[:-1]), file = fp)
 print('-----------------------------', file = fp)
-print('J(qt)={}'.format(Jtt), file = fp)
-print('J(q0)={}'.format(J00), file = fp)
-print('J(qt)/J(q0)={}'.format(J_rel), file = fp)
+print('J(qt)={}'.format(Jtt_str[:-1]), file = fp)
+print('J(q0)={}'.format(J00_str[:-1]), file = fp)
+print('J(qt)/J(q0)={}'.format(J_rel_str[:-1]), file = fp)
 percent_list = [str(round(Error_list[i]*100,2))+'%' for i in range(len(Error_list))]
 percent_list[0] = ''
 label_list[0] = 'Init'

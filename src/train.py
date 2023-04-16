@@ -92,25 +92,26 @@ def train(x_train,y_train,x_test,y_test,device,model_pth='',name='',
         torch.save(model,NET_DIR + name + '.pth')
         
 if __name__ == '__main__':
-    k = 80
+    k = 40
     qmethod = 'G'
     R = 200
-    label = 'R200'
+    label1 = 'R200'
+    label2 = 'R200'
     angle_total = 64
     angle_TYPE = 'P'
-    angle_for_test = 8
+    angle_for_test = 4
     angle_mode = 'uniform'
     NS_return = 'T'
     ntrain = 1024
     ntest = 32
     maxq = 0.1
-    FNO_ARG = (20,32,4)
+    FNO_ARG = (12,32,4)
     train_filename = 'k{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, ntrain, angle_TYPE, angle_for_test,angle_total,
-                                                 angle_mode, qmethod, maxq, NS_return, label)
+                                                 angle_mode, qmethod, maxq, NS_return, label1)
     test_filename = 'k{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, ntest, angle_TYPE, angle_for_test,angle_total,
-                                             angle_mode, qmethod, maxq, NS_return, label)
+                                             angle_mode, qmethod, maxq, NS_return, label2)
     NET_name = 'k{}_{}_{},{},{}_{}_{}_NS{}_{}_{},{},{}'.format(k, angle_TYPE, angle_for_test,angle_total,
-                                         angle_mode, qmethod, maxq, NS_return, label,
+                                         angle_mode, qmethod, maxq, NS_return, label2,
                                          FNO_ARG[0],FNO_ARG[1],FNO_ARG[2])
     q_train, wave_train, u_train0, u_train1 = load_data(train_filename, device = device,
                     NS_return = NS_return, Usage = 'Train')
@@ -118,6 +119,7 @@ if __name__ == '__main__':
                         NS_return = NS_return, Usage = 'Train')
     x_train,x_test = (q_train,wave_train),(q_test,wave_test)
     y_train,y_test = (u_train0,u_train1),(u_test0,u_test1)
+
     
     train(x_train,y_train,x_test,y_test,device,
       '',NET_name+'_0',FNO_ARG=FNO_ARG,
@@ -129,3 +131,12 @@ if __name__ == '__main__':
     
     
     # nohup python -u src/train.py >> .train.log 2>&1 &
+    
+    
+    
+    
+    
+    
+    # train(x_train,y_train,x_test,y_test,device,
+    #   NET_name+'_1', NET_name+'_2',
+    #   start_lr=1e-4,end_lr=1e-5,epochs=200,early_stop=False,loss_level=1)

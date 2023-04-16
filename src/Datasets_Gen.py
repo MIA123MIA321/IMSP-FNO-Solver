@@ -4,11 +4,11 @@ from utils import default_timer
 
 
 class Datasets:
-    def __init__(self, nsample, comp_grid = 128, k = 2, qmethod = 'G', times = 2, 
+    def __init__(self, nsample, comp_grid = 512, k = 20, qmethod = 'G', times = 4, 
                  maxq = 0.1, label = '', R=200,
                  angle_TYPE = 'P', angle_total = 64,
                  angle_for_test = 1, angle_mode = 'first',
-                 NS_return = 'T', NS_length = 5):
+                 NS_return = 'T', NS_length = 3):
         '''
         angle_TYPE = 'P' : Plane wave with frequency k
         angle_TYPE = 'O' : One
@@ -124,9 +124,7 @@ class Datasets:
         q = self.q_data_gen()
         WAVE = self.wave_gen('save')
         u_i = self.u_data_gen(q,'init')
-        t = default_timer()
         u_t = self.u_data_gen(q,'total')
-        t1 = default_timer()
         u_NS = self.NS_data_gen(q, u_i)
         q = q[...,::self.times,::self.times]
         WAVE = WAVE[...,::self.times,::self.times]
@@ -134,7 +132,6 @@ class Datasets:
         u_t = u_t[...,::self.times,::self.times]
         if u_NS is not None:
             u_NS = u_NS[...,::self.times,::self.times]
-        print(t1-t)
         return q, WAVE, u_i, u_t, u_NS
     
     def save_data(self):
@@ -155,19 +152,21 @@ class Datasets:
         
 if __name__ == '__main__':                           
     nsample = 32
-    k = 2
+    k = 20
     qmethod = 'G'
     R = 200
     label = 'R200'
     angle_TYPE = 'P'
-    angle_for_test = 4
+    angle_for_test = 1
     angle_mode = 'uniform'
     maxq = 0.1
-    comp_grid = 128
-    times = 2
+    comp_grid = 512
+    times = 4
     Data = Datasets(nsample, k = k, qmethod = qmethod, label = label, R = R,
                     maxq = maxq, comp_grid = comp_grid, times = times, 
                     angle_TYPE = angle_TYPE, angle_for_test = angle_for_test,
                     angle_mode = angle_mode)
     Data.save_data()
     
+    
+    # nohup python -u src/Datasets_Gen.py > .gen.log 2>&1 &

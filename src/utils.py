@@ -1,8 +1,8 @@
 import numpy as np
 import scipy
+from scipy import fft
 from scipy.sparse import dia_matrix
 from scipy.sparse.linalg import cg
-from scipy import fft
 import time
 from datetime import datetime
 from timeit import default_timer
@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import imageio
 from PIL import Image
 import sys
+
 
 device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 X_list = []
@@ -195,23 +196,22 @@ def Round(vector, times):
 
 
 def load_data(filename, device = 'cpu',angle_id = -1,
-              NS_return = 'T', Usage = 'Train'):
+              NS_return = 'T', Usage = 'Train', output_size = 64):
     Dataset_dir = '/data/liuziyang/Programs/pde_solver/Dataset/'
     data = np.load(Dataset_dir+filename+'.npz', allow_pickle=True)    
     q = Type_Settle(data['q'], 'torch', device) # (nsample, 1, 65, 65)
-    wave = Type_Settle(data['WAVE'], 'torch', device) # (angle_for_test, nsample, 1/2, 65, 65)
-    u_i = Type_Settle(data['u_i'], 'torch', device) # (angle_for_test, nsample, 2, 65, 65)
-    u_t = Type_Settle(data['u_t'], 'torch', device) # (angle_for_test, nsample, 2, 65, 65)
+    times = q.shape[-1] // 64
+    q = q[...,::times,::times]
+    wave = Type_Settle(data['WAVE'][...,::times,::times], 'torch', device) 
+    # (angle_for_test, nsample, 1/2, 65, 65)
+    u_i = Type_Settle(data['u_i'][...,::times,::times], 'torch', device) 
+    # (angle_for_test, nsample, 2, 65, 65)
+    u_t = Type_Settle(data['u_t'][...,::times,::times], 'torch', device) 
+    # (angle_for_test, nsample, 2, 65, 65)
     u_NS = None 
-    def flatten(x):
-        SHAPE = x.shape
-        if len(SHAPE)==5:
-            return x.reshape(SHAPE[0] * SHAPE[1], SHAPE[2], SHAPE[3], SHAPE[4])
-        elif len(SHAPE)==6:
-            return x.reshape(SHAPE[0] * SHAPE[1], SHAPE[2], SHAPE[3],
-                         SHAPE[4], SHAPE[5])
     if NS_return == 'T':
-        u_NS = Type_Settle(data['u_NS'], 'torch', device) # (angle_for_test, nsample, NS_length, 2, 65, 65)
+        u_NS = Type_Settle(data['u_NS'][...,::times,::times], 'torch', device) 
+        # (angle_for_test, nsample, NS_length, 2, 65, 65)
         
     if angle_id >= 0:
         q = q[angle_id:(angle_id+1)]
@@ -259,27 +259,6 @@ def heatmap_for_test(x,y,label_list,label='',loss = True):
         axs[1].set_title(label_list[1])
         fig.tight_layout()
         plt.show()
-
-
-def model_eval(model, q, f,device = None, first=False):
-    if first:
-        out_0 = model(f[:,0:1])
-        if torch.norm(f[:,1:2]) < 1e-8:
-            out_1 = torch.zeros_like(out_0)
-        else:
-            out_1 = model(f[:,1:2])
-        out = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
-    else:
-        out_0 = model(q*f[:,0:1])
-        if torch.norm(f[:,1:2]) < 1e-8:
-            out_1 = torch.zeros_like(out_0)
-        else:
-            out_1 = model(q*f[:,1:2])
-        out = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
-    if device is None:
-        return out
-    else:
-        return out.to(device)
     
     
 def SEED_SET(SEED):
@@ -299,8 +278,8 @@ def callbackF(X):
         print('iter {} completed'.format(iters),
           '       %s' % str(datetime.now())[:-7])
     else:
-        print('iter {} completed'.format(iters),
-              '        %s' % str(datetime.now())[:-7])
+        print('iter {}  completed'.format(iters),
+              '       %s' % str(datetime.now())[:-7])
 
 
 def plot_heatmap(q_list,title,picdir,gifdir,
@@ -349,3 +328,40 @@ def plot_heatmap(q_list,title,picdir,gifdir,
     for i in range(1, nn):
         img1 = np.hstack((img1, img_list1[i]))
     cv2.imwrite(picdir + title + '.jpg', img1)
+    
+    
+def INTERPOLATE(x, in_size, out_size, device, mode = 'bicubic'):
+    if isinstance(x, np.ndarray):
+        x = x.reshape(1, 1, in_size + 1,in_size + 1)
+        y1 = Type_Settle(x.real,'torch',device)
+        y2 = Type_Settle(x.imag,'torch',device)
+        y_out1 = F.interpolate(y1, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
+        y_out2 = F.interpolate(y2, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
+        return Type_Settle(y_out1[0,0],'np') + 1j*Type_Settle(y_out2[0,0],'np')
+    if isinstance(x, torch.Tensor):
+        assert x.shape[-1] == in_size + 1
+        x_out = F.interpolate(x, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
+        return x_out
+
+    
+def data_projection(x,data_to_boundary = True):
+    if data_to_boundary:
+        x1 = x[...,1:-1,0]
+        x2 = x[...,1:-1,-1]
+        x3 = x[...,0,1:-1]
+        x4 = x[...,-1,1:-1]
+        if isinstance(x, np.ndarray):
+            return np.concatenate([x1,x2,x3,x4])
+        elif isinstance(x, torch.Tensor):
+            return torch.cat([x1,x2,x3,x4],-1)
+    else:
+        N = x.shape[-1] // 4
+        if isinstance(x, np.ndarray):
+            output = np.zeros((N+2,N+2),dtype = np.complex128)
+        elif isinstance(x, torch.Tensor):
+            output = torch.zeros((x.shape[0],x.shape[1],N+2,N+2))
+        output[...,1:-1,0]  = x[...,0*N:1*N]
+        output[...,1:-1,-1] = x[...,1*N:2*N]
+        output[...,0,1:-1]  = x[...,2*N:3*N]
+        output[...,-1,1:-1] = x[...,3*N:4*N]
+        return output

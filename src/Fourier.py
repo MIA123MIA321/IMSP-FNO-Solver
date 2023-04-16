@@ -137,7 +137,8 @@ class FNO2d_2d(nn.Module):
     def forward(self,x):
         return torch.cat([self.conv1(x[:,:1])-self.conv2(x[:,1:2]),
                           self.conv1(x[:,1:2])+self.conv2(x[:,:1])],dim=1)
-    
+
+
 class FNO2d_modified(nn.Module):
     def __init__(self, modes, width, depth):
         super(FNO2d_modified, self).__init__()
@@ -146,10 +147,12 @@ class FNO2d_modified(nn.Module):
         self.depth = depth
         self.conv = FNO2d_part(self.modes, self.width, self.depth, 1, 2)
     def forward(self,data):
-        # x[:,0:1] --> q
-        # x[:,1:3] --> f
         q = data[:,0:1]
         f = data[:,1:3]
-        u0_approx = model_eval(self.conv, q, f)
-        return u0_approx
-                        
+        out_0 = self.conv(q*f[:,0:1])
+        if torch.norm(f[:,1:2]) < 1e-8:
+            out_1 = torch.zeros_like(out_0)
+        else:
+            out_1 = self.conv(q*f[:,1:2])
+        out = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
+        return out

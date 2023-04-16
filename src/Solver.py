@@ -35,7 +35,7 @@ def Matrix_factorize(N, k, Q = None):
     return
 
 
-def Matrix_solve(F: np.ndarray):
+def Matrix_solve(F: np.ndarray, one_dim = True):
     # F:((N+1)**2,) --> ((N+1)**2,)
     global ctx
     M = F.shape[0]
@@ -45,7 +45,11 @@ def Matrix_solve(F: np.ndarray):
     ctx.set_rhs(x)
     ctx.run(job = 3)
     tmp = x.reshape(-1, )
-    return tmp[:M] + 1j * tmp[M:]
+    output = tmp[:M] + 1j * tmp[M:]
+    if not one_dim:
+        N = int(np.sqrt(M) - 1)
+        output = output.reshape(N + 1, N + 1)
+    return output
 
 
 def mathscr_F0(N, Q, k, F, solver = 'MUMPS'):
@@ -58,9 +62,14 @@ def mathscr_F0(N, Q, k, F, solver = 'MUMPS'):
         return Matrix_solve(F)
     
     
-def NET_method(N, q, k, f, NET, length = 3):
+def NET_method(N, N_comp, q, k, f, NET, device, length = 3):
+    assert N_comp == 64
+    times = N // N_comp
+    q = q[...,::times,::times].detach()
+    f = f[...,::times,::times].detach()
     if torch.norm(f) < 1e-8:
-        return torch.zeros_like(f).to(device)
+        ANS = torch.zeros_like(f).to(device)
+        return INTERPOLATE(ANS,N_comp,N,device) 
     U_NET = NET(torch.cat([torch.ones_like(q), -f/(k*k)],1))
     SUM_NET = U_NET.clone().detach()
     if torch.norm(q) > 1e-8:
@@ -74,4 +83,4 @@ def NET_method(N, q, k, f, NET, length = 3):
             SUM_NET = SUM_NET_OLD + U_NET
             del SUM_NET_OLD
     del U_NET
-    return SUM_NET 
+    return INTERPOLATE(SUM_NET,N_comp,N,device) 

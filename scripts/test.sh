@@ -2,10 +2,11 @@
 
 
 N=64
+N_comp='64'
 k='20'
-m=64
+m=32
 maxq=0.1
-q_method='G'
+q_method='TEST'
 noise_level=0.0
 # 以上是一些预设，可设置为benchmark
 
@@ -21,7 +22,8 @@ Opt () {
     nohup python -u \
     ${MAIN_PATH} \
     --PROJECT_DIR ${PROJECT_DIR} \
-    --N ${N} \
+    --N $3 \
+    --N_comp $4 \
     --k ${k} \
     --m ${m} \
     --maxq ${maxq} \
@@ -30,9 +32,9 @@ Opt () {
     --forward_solver $2 \
     --title ${TITLE} \
     --output_filename ${OUTPUT_LOG} \
-    --Net_name 'k'${k}'_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1' \
     >> ${TMP_PATH} 2>&1 &&
     python -u ${WRITE_PATH} \
+    --PROJECT_DIR ${PROJECT_DIR} \
     --output_filename ${OUTPUT_LOG}
 }
 
@@ -48,11 +50,13 @@ TMP_PATH='.tmp.log'
 RES_DIR=${DIR}'pic/res/'
 
 echo > ${OUTPUT_LOG} &&
-Opt '20' 'MUMPS' &&
-Opt '20' 'NET' &&
-Opt '40' 'MUMPS' &&
-Opt '40' 'NET' &&
-
+# Opt '40' 'MUMPS' 64 '64' &&
+# Opt '40' 'MUMPS' 64 '64' &&
+Opt '20,40' 'MUMPS,MUMPS' 128 '64,128' &&
+Opt '20,40' 'NET,MUMPS' 128 '64,128' &&
+# Opt '40' 'MUMPS' 128 '128' &&
+# Opt '20,80' 'NET,MUMPS' 128 '64,128' &&
+# Opt '80' 'MUMPS' 128 '128' &&
 
 python ${DRAW_PATH} \
 --logname ${OUTPUT_LOG} \
