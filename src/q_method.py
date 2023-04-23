@@ -22,12 +22,12 @@ def q_Gaussian(N, b1 = 0.3, b2 = 0.6, a1 = 150, a2 = 70, gamma = 1):
     return q
 
 
-def q_circle(N, center_x = 0.5, center_y = 0.5, radius = 0.3, sigma = 3):
+def q_circle(N, center_x = 0.5, center_y = 0.5, radius = 0.3, sigma = 1):
     q = np.zeros((N+1, N+1))
     x, y = np.meshgrid(np.linspace(0, 1, N+1), np.linspace(0, 1, N+1))
     dist = np.sqrt((x - center_x)**2 + (y - center_y)**2)
     q[dist <= radius] = 1
-    q = gaussian_filter(q, 3)
+    q = gaussian_filter(q, sigma/128*N)
     return q
 
 
@@ -43,26 +43,34 @@ def q_Continuous(N):
 
 
 def q_test(N):
-    # q1 = np.zeros((N+1, N+1))
-    # q2 = np.zeros((N+1, N+1))
-    # random.seed(100)
-    # for i in range(5):
-    #     x_axis = random.uniform(0.2,0.8)
-    #     y_axis = random.uniform(0.2,0.8)
-    #     R1 = random.uniform(150,250)
-    #     R2 = random.uniform(150,250)
-    #     gamma = random.uniform(-1,1)
-    #     q1 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
-    # for i in range(5):
-    #     x_axis = random.uniform(0.2,0.8)
-    #     y_axis = random.uniform(0.2,0.8)
-    #     R1 = random.uniform(150,250)
-    #     R2 = random.uniform(150,250)
-    #     gamma = random.uniform(-1,1)
-    #     q2 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
-    # return q_circle(N, radius = 0.3) - q_circle(N, radius = 0.15) + q2
+    q1 = np.zeros((N+1, N+1))
+    q2 = np.zeros((N+1, N+1))
+    random.seed(0)
+    for i in range(5):
+        x_axis = random.uniform(0.2,0.8)
+        y_axis = random.uniform(0.2,0.8)
+        R1 = random.uniform(150,250)
+        R2 = random.uniform(150,250)
+        gamma = random.uniform(-1,1)
+        q1 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
+    for i in range(5):
+        x_axis = random.uniform(0.2,0.8)
+        y_axis = random.uniform(0.2,0.8)
+        R1 = random.uniform(150,250)
+        R2 = random.uniform(150,250)
+        gamma = random.uniform(-1,1)
+        q2 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
+    return 0.8*q_circle(N, radius = 0.3) - 0.5*q_circle(N, radius = 0.2) + q2
     # return q_Gaussian(N)
-    return q_T(N, sigma = 3)
+    # return q_T(N, sigma = 5)
+    # return q_circle(N, radius = 0.3)
+    # q = np.zeros((N+1,N+1))
+    # q += q_Gaussian(N, 0.3, 0.6, 150, 70, 1)
+    # q -= q_Gaussian(N, 0.5, 0.5, 20, 30, 0.8)
+    # q += q_Gaussian(N, 0.7, 0.5, 40, 90, 0.6)
+    # q += q_circle(N, radius = 0.15, sigma = 5)
+    # return q
+    # return q_Continuous(N) + q_Gaussian(N, 0.3, 0.6, 150, 70, 1)
     
     
     

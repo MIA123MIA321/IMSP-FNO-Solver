@@ -3,6 +3,7 @@ import scipy
 from scipy import fft
 from scipy.sparse import dia_matrix
 from scipy.sparse.linalg import cg
+from scipy.interpolate import interp2d
 import time
 from datetime import datetime
 from timeit import default_timer
@@ -90,47 +91,6 @@ class LpLoss(object):
         
     def __call__(self, x, y):
         return self.rel(x, y)
-
-
-def Matrix_Gen(N, Q, k,ToTensor=False,Transpose=False):
-    M = N + 1
-    data1 = k * k * (1 + Q) - 4 * N * N
-    data1 = np.tile(data1, 2)
-    data2 = np.ones(M).reshape(-1, )
-    data2[0] = 0
-    data2[1] = 2
-    data2 = np.tile(data2, 2)
-    data2_plus = N * N * np.tile(data2, M)
-    data2_minus = np.flipud(data2_plus)
-    data3 = np.ones(M * M).reshape(-1, )
-    data3[:M] = 0
-    data3[M:2 * M] = 2
-    data3_plus = N * N * data3
-    data3_plus = np.tile(data3_plus, 2)
-    data3_minus = np.flipud(data3_plus)
-    matrix__ = np.ones((M, M))
-    matrix__[0, 0] = matrix__[-1, 0] = matrix__[-1, -1] = matrix__[0, -1] = 2
-    matrix__[1:-1, 1:-1] = 0
-    data4 = -2 * k * matrix__.reshape(-1, ) * N
-    data4_plus = np.tile(data4, 2)
-    data4_minus = -data4_plus
-    data = (np.c_[data1,data2_minus,data2_plus,
-            data3_minus,data3_plus,data4_minus,
-            data4_plus]).transpose()
-    offsets = np.array([0, -1, 1, -M, M, -M * M, M * M])
-    dia = dia_matrix((data, offsets), shape=(2 * M * M, 2 * M * M))
-    mat = dia.tocoo()
-    if Transpose:
-        mat = mat.T
-    if not ToTensor:
-        return mat
-    else:
-        mat = dia.tocoo()
-        values = torch.tensor(mat.data)
-        indices = torch.tensor(np.array([mat.row, mat.col]), dtype=torch.long)
-        shape = torch.Size(mat.shape)
-        torch_sparse_mat = torch.sparse_coo_tensor(indices, values, shape)
-        return torch_sparse_mat
 
 
 def Diag_Gen(N, Q, k):
@@ -239,7 +199,7 @@ def heatmap_for_test(x,y,label_list,label='',loss = True):
     data2 = Type_Settle(y, 'np')
     if loss:
         data3 = data1-data2
-        rel_err = 100*(np.linalg.norm(data3)/np.linalg.norm(data1))
+        rel_err = 100*(np.linalg.norm(data3)/np.linalg.norm(data2))
         print('{}相对误差为{:.2f}%'.format(label,rel_err))
 
         fig, axs = plt.subplots(1, 3, figsize=(15, 4))
@@ -330,17 +290,21 @@ def plot_heatmap(q_list,title,picdir,gifdir,
     cv2.imwrite(picdir + title + '.jpg', img1)
     
     
-def INTERPOLATE(x, in_size, out_size, device, mode = 'bicubic'):
+def INTERPOLATE(x, in_size, out_size, device):
     if isinstance(x, np.ndarray):
-        x = x.reshape(1, 1, in_size + 1,in_size + 1)
-        y1 = Type_Settle(x.real,'torch',device)
-        y2 = Type_Settle(x.imag,'torch',device)
-        y_out1 = F.interpolate(y1, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
-        y_out2 = F.interpolate(y2, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
-        return Type_Settle(y_out1[0,0],'np') + 1j*Type_Settle(y_out2[0,0],'np')
+        x = x.reshape((in_size + 1, in_size + 1))
+        l_in = np.linspace(0, 1, in_size + 1)
+        l_out = np.linspace(0, 1, out_size + 1)
+        if np.isrealobj(x):
+            output = interp2d(l_in, l_in, x, kind='cubic')(l_out, l_out)
+            return output
+        else:
+            output_real = interp2d(l_in, l_in, x.real, kind='cubic')(l_out, l_out)
+            output_imag = interp2d(l_in, l_in, x.imag, kind='cubic')(l_out, l_out)
+            return (output_real+1j*output_imag)
     if isinstance(x, torch.Tensor):
         assert x.shape[-1] == in_size + 1
-        x_out = F.interpolate(x, size=(out_size + 1, out_size + 1), mode=mode, align_corners=True)
+        x_out = F.interpolate(x, size=(out_size + 1, out_size + 1), mode='bicubic', align_corners=True)
         return x_out
 
     

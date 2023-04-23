@@ -1,70 +1,53 @@
 
-Pre data loading         2023-04-14 17:14:03
-Pre data completed       2023-04-14 17:14:32
+Boundary data preparing  2023-04-21 14:45:14
+Boundary data prepared   2023-04-21 14:49:42
 ********************************************
-Process 0                2023-04-14 17:14:32
-iter 1  completed        2023-04-14 17:14:32
-iter 2  completed        2023-04-14 17:14:32
-iter 3  completed        2023-04-14 17:14:33
-iter 4  completed        2023-04-14 17:14:33
-iter 5  completed        2023-04-14 17:14:33
-iter 6  completed        2023-04-14 17:14:33
-iter 7  completed        2023-04-14 17:14:33
-iter 8  completed        2023-04-14 17:14:33
-iter 9  completed        2023-04-14 17:14:33
-iter 10 completed        2023-04-14 17:14:34
-iter 11 completed        2023-04-14 17:14:34
-iter 12 completed        2023-04-14 17:14:34
+Process 0                2023-04-21 14:49:56
+iter 1  completed        2023-04-21 14:51:13
+iter 2  completed        2023-04-21 14:51:43
+iter 3  completed        2023-04-21 14:51:59
+iter 4  completed        2023-04-21 14:52:14
+iter 5  completed        2023-04-21 14:52:29
+iter 6  completed        2023-04-21 14:52:44
+iter 7  completed        2023-04-21 14:52:59
+iter 8  completed        2023-04-21 14:53:15
+iter 9  completed        2023-04-21 14:53:29
+iter 10 completed        2023-04-21 14:53:44
+iter 11 completed        2023-04-21 14:53:59
 ********************************************
-Process 1                2023-04-14 17:14:39
-iter 13 completed        2023-04-14 17:15:00
-iter 14 completed        2023-04-14 17:15:07
-iter 15 completed        2023-04-14 17:15:15
-iter 16 completed        2023-04-14 17:15:22
-iter 17 completed        2023-04-14 17:15:29
-iter 18 completed        2023-04-14 17:15:36
-iter 19 completed        2023-04-14 17:15:43
-iter 20 completed        2023-04-14 17:15:51
-iter 21 completed        2023-04-14 17:15:58
-iter 22 completed        2023-04-14 17:16:12
-iter 23 completed        2023-04-14 17:16:19
-iter 24 completed        2023-04-14 17:16:27
- This problem is unconstrained.
  This problem is unconstrained.
 RUNNING THE L-BFGS-B CODE
 
            * * *
 
 Machine precision = 2.220D-16
- N =        16641     M =           10
+ N =      1050625     M =           10
 
 At X0         0 variables are exactly at the bounds
 
-At iterate    0    f=  2.07415D+00    |proj g|=  4.38128D-02
+At iterate    0    f=  7.49213D+02    |proj g|=  7.68967D-02
 
-At iterate    1    f=  1.32782D+00    |proj g|=  3.37579D-02
+At iterate    1    f=  2.60566D+02    |proj g|=  7.07940D-02
 
-At iterate    2    f=  1.37557D-01    |proj g|=  1.04688D-02
+At iterate    2    f=  1.03405D+02    |proj g|=  3.08929D-02
 
-At iterate    3    f=  5.24399D-02    |proj g|=  6.95008D-03
+At iterate    3    f=  6.46417D+01    |proj g|=  3.15440D-02
 
-At iterate    4    f=  2.82246D-02    |proj g|=  4.39338D-03
+At iterate    4    f=  1.25982D+01    |proj g|=  1.75653D-02
 
-At iterate    5    f=  1.02201D-02    |proj g|=  2.68328D-03
+At iterate    5    f=  4.47680D+00    |proj g|=  1.01562D-02
 
-At iterate    6    f=  3.02253D-03    |proj g|=  8.41010D-04
+At iterate    6    f=  6.95781D-01    |proj g|=  3.24448D-03
 
-At iterate    7    f=  1.79032D-03    |proj g|=  3.09581D-04
+At iterate    7    f=  2.77786D-01    |proj g|=  1.96733D-03
 
-At iterate    8    f=  1.70036D-03    |proj g|=  2.68944D-04
+At iterate    8    f=  1.12422D-01    |proj g|=  7.37213D-04
 
-At iterate    9    f=  1.65684D-03    |proj g|=  2.27656D-04
+At iterate    9    f=  8.25983D-02    |proj g|=  5.43210D-04
 
-At iterate   10    f=  1.60949D-03    |proj g|=  1.40725D-04
+At iterate   10    f=  6.22859D-02    |proj g|=  2.96764D-04
 
-At iterate   11    f=  1.58181D-03    |proj g|=  2.04328D-04
-
-At iterate   12    f=  1.56985D-03    |proj g|=  1.54300D-04
+At iterate   11    f=  5.52726D-02    |proj g|=  3.32672D-04
 
            * * *
 
@@ -79,59 +62,7 @@ F     = final function value
            * * *
 
    N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
-16641     12     14      1     0     0   1.543D-04   1.570D-03
-  F =   1.5698462564072532E-003
+*****     11     16      1     0     0   3.327D-04   5.527D-02
+  F =   5.5272610109478031E-002
 
-STOP: TOTAL NO. of ITERATIONS REACHED LIMIT                 
-RUNNING THE L-BFGS-B CODE
-
-           * * *
-
-Machine precision = 2.220D-16
- N =        16641     M =           10
-
-At X0         0 variables are exactly at the bounds
-
-At iterate    0    f=  1.45230D-01    |proj g|=  1.07450D-02
-
-At iterate    1    f=  9.66077D-02    |proj g|=  8.75584D-03
-
-At iterate    2    f=  5.59408D-02    |proj g|=  5.23313D-03
-
-At iterate    3    f=  3.26750D-02    |proj g|=  3.52703D-03
-
-At iterate    4    f=  2.53867D-02    |proj g|=  1.73206D-03
-
-At iterate    5    f=  2.23398D-02    |proj g|=  9.52944D-04
-
-At iterate    6    f=  2.13875D-02    |proj g|=  5.61208D-04
-
-At iterate    7    f=  2.10510D-02    |proj g|=  2.80592D-04
-
-At iterate    8    f=  2.09708D-02    |proj g|=  2.47687D-04
-
-At iterate    9    f=  2.08182D-02    |proj g|=  1.91922D-04
-
-At iterate   10    f=  2.07729D-02    |proj g|=  1.48903D-04
-
-At iterate   11    f=  2.07465D-02    |proj g|=  1.25184D-04
-
-At iterate   12    f=  2.07246D-02    |proj g|=  8.68366D-05
-
-           * * *
-
-Tit   = total number of iterations
-Tnf   = total number of function evaluations
-Tnint = total number of segments explored during Cauchy searches
-Skip  = number of BFGS updates skipped
-Nact  = number of active bounds at final generalized Cauchy point
-Projg = norm of the final projected gradient
-F     = final function value
-
-           * * *
-
-   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
-16641     12     15      1     0     0   8.684D-05   2.072D-02
-  F =   2.0724593226450885E-002
-
-STOP: TOTAL NO. of ITERATIONS REACHED LIMIT                 
+CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH             

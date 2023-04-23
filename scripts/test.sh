@@ -4,8 +4,8 @@
 N=64
 N_comp='64'
 k='20'
-m=32
-maxq=0.1
+m=16
+maxq=1.0
 q_method='TEST'
 noise_level=0.0
 # 以上是一些预设，可设置为benchmark
@@ -27,6 +27,7 @@ Opt () {
     --k ${k} \
     --m ${m} \
     --maxq ${maxq} \
+    --maxiter $5 \
     --q_method ${q_method} \
     --noise_level ${noise_level} \
     --forward_solver $2 \
@@ -50,13 +51,10 @@ TMP_PATH='.tmp.log'
 RES_DIR=${DIR}'pic/res/'
 
 echo > ${OUTPUT_LOG} &&
-# Opt '40' 'MUMPS' 64 '64' &&
-# Opt '40' 'MUMPS' 64 '64' &&
-Opt '20,40' 'MUMPS,MUMPS' 128 '64,128' &&
-Opt '20,40' 'NET,MUMPS' 128 '64,128' &&
-# Opt '40' 'MUMPS' 128 '128' &&
-# Opt '20,80' 'NET,MUMPS' 128 '64,128' &&
-# Opt '80' 'MUMPS' 128 '128' &&
+# Opt '20,60,80' 'MUMPS,MUMPS,MUMPS' 1024 '128,256,512' '15,10,5' &&
+# Opt '20,60,80' 'NET,MUMPS,MUMPS' 1024 '64,256,512' '15,10,5' &&
+Opt '20' 'MUMPS' 1024 '128' '15' &&
+
 
 python ${DRAW_PATH} \
 --logname ${OUTPUT_LOG} \

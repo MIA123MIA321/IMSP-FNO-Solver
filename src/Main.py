@@ -13,13 +13,13 @@ parser.add_argument('--maxq', type=float, default = 0.1)
 parser.add_argument('--q_method', type=str, default = 'T')
 parser.add_argument('--noise_level', type=float, default = 0.0)
 parser.add_argument('--gtol', type = float, default = 1e-10)
-parser.add_argument('--maxiter', type = int, default = 12)
+parser.add_argument('--maxiter', type = str)
 parser.add_argument('--forward_solver', type=str, default = 'NET')
 parser.add_argument('--title', type = str, default = 'tmp')
 parser.add_argument('--output_filename', type = str, required=True)
 parser.add_argument('--NS_length', type = int, default = 3)
 args = parser.parse_args()
-print('Pre data loading'+'         '+str(datetime.now())[:-7])
+print('Boundary data preparing'+'  '+str(datetime.now())[:-7])
 PROJECT_DIR = args.PROJECT_DIR
 sys.path.append(PROJECT_DIR)
 N = args.N
@@ -35,6 +35,7 @@ forward_solver = args.forward_solver
 title = args.title
 output_filename = args.output_filename
 NS_length = args.NS_length
+scheme = 5
 
 jpgdir = PROJECT_DIR + 'pic/process_jpg/'
 gifdir = PROJECT_DIR + 'pic/process_gif/'
@@ -47,16 +48,19 @@ if isinstance(k+'',str):
 k_len = len(k_list)
 N_comp_list = [int(eval(item)) for item in N_comp.split(',')]
 forward_solver_list = (forward_solver+'').split(',')
+maxiter_list = [int(eval(item)) for item in maxiter.split(',')]
 assert len(forward_solver_list) == k_len
 assert len(N_comp_list) == k_len
 
 
-q = q_gen(N, q_method, maxq)
+q = q_gen(N, q_method, maxq)  # q:(N+1,N+1)
 Q = q.reshape(-1, )
-N_gen = 256
+N_gen = 1024
 q_gen = q_gen(N_gen, q_method, maxq)
 Q_gen = q_gen.reshape(-1,)
-f_data_np, partial_data_np = data_gen(Q_gen, N_gen, N, k_list, m, 0.0)
+f_data_np, partial_data_np = data_gen(Q_gen, N_gen, N, k_list, m, 0.0, scheme)
+# f_data_np:(k_len+1,m,N+1,N+1)
+# partial_data_np:(k_len+1,m,4N-4)
 f_data_list, partial_data_list = [], []
 NET_list = []
 for i in range(k_len):
@@ -73,7 +77,8 @@ for i in range(k_len):
 
     else:
         raise ValueError("Solver Error")
-print('Pre data completed'+'       '+str(datetime.now())[:-7])
+print('Boundary data prepared'+'   '+str(datetime.now())[:-7])
+print('********************************************')
 
 Q0 = None
 total_time = 0.
@@ -85,22 +90,22 @@ for i in range(k_len):
     if Q0 is None:
         Q0 = Q * 0
     X_list.append(Q0)
-    Matrix_analysis(N_comp_list[i])
-    args1 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, True)
-    args2 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, False)
+    Matrix_analysis(N_comp_list[i],scheme=scheme)
+    args1 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, True)
+    args2 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, False)
     J00 = J_single_frequency(Q0, *args2)
     Jtt = J_single_frequency(Q, *args2)
     J00_str += str(J00)[:5]+','
     Jtt_str += str(Jtt)[:5]+','
-    print('********************************************')
     print('Process {}'.format(i)+'                '+str(datetime.now())[:-7])
     J_rel_str += str(Jtt/J00)[:5]+','
     ftol = 1e-5 * J00
     t0 = time.time()
     _,Q0 = SOLVE(J_single_frequency,Q0=Q0,args=args1,jac=True,
             options={'disp': True,'gtol': gtol,
-                     'maxiter': maxiter,'ftol':ftol},
+                     'maxiter': maxiter_list[i],'ftol':ftol},
             method='L-BFGS-B')
+    print('********************************************')
     time_total = time.time() - t0
     time_total_str += str(time_total)[:5]+','
 
