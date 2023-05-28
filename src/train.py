@@ -92,7 +92,7 @@ def train(x_train,y_train,x_test,y_test,device,model_pth='',name='',
         torch.save(model,NET_DIR + name + '.pth')
         
 if __name__ == '__main__':
-    k = 40
+    k = 20
     qmethod = 'G'
     R = 200
     label1 = 'R200'

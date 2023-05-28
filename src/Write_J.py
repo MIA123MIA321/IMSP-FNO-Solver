@@ -18,17 +18,17 @@ for line in open(tmp_filename, "r", encoding='UTF-8'):
     search_ = re.findall('f=  .*? ', line)
     if Find_Tnf:
         T_tmp = re.findall(r'\d+', re.sub(r'\s+', ' ', line))
-        if int(T_tmp[0])>int(T_tmp[1]):
-            Tit_list.append(int(T_tmp[1]))
-            Tnf_list.append(int(T_tmp[2]))
-        else:
-            Tit_list.append(int(T_tmp[0]))
-            Tnf_list.append(int(T_tmp[1]))
+        if len(T_tmp) > 0:
+            if int(T_tmp[0])>int(T_tmp[1]):
+                Tit_list.append(int(T_tmp[1]))
+                Tnf_list.append(int(T_tmp[2]))
+            else:
+                Tit_list.append(int(T_tmp[0]))
+                Tnf_list.append(int(T_tmp[1]))
+            Find_Tnf = False
     search_Tnf = re.findall('Tnf  Tnint', line)
     if len(search_Tnf) > 0:
         Find_Tnf = True
-    else:
-        Find_Tnf = False
     if len(search_) > 0:
         a = search_[0]
         J_list.append(eval(a[4:-5] + 'e' + a[-4:-1]))

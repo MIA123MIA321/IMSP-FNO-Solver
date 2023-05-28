@@ -5,7 +5,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--PROJECT_DIR', type = str, default = '/data/liuziyang/Programs/pde_solver/')
-parser.add_argument('--N', type = int, default = 64)
+parser.add_argument('--N', type = int, default = 1024)
 parser.add_argument('--N_comp', type = str)
 parser.add_argument('--k', type = str, default = '2')
 parser.add_argument('--m', type=int, default = 16)
@@ -18,6 +18,8 @@ parser.add_argument('--forward_solver', type=str, default = 'NET')
 parser.add_argument('--title', type = str, default = 'tmp')
 parser.add_argument('--output_filename', type = str, required=True)
 parser.add_argument('--NS_length', type = int, default = 3)
+parser.add_argument('--load_boundary', type = str, default = 'F')
+parser.add_argument('--bd_num', type = int, default = 4)
 args = parser.parse_args()
 print('Boundary data preparing'+'  '+str(datetime.now())[:-7])
 PROJECT_DIR = args.PROJECT_DIR
@@ -35,11 +37,15 @@ forward_solver = args.forward_solver
 title = args.title
 output_filename = args.output_filename
 NS_length = args.NS_length
+load_boundary = args.load_boundary
 scheme = 5
+expand_times = 2
+bd_num = args.bd_num
 
 jpgdir = PROJECT_DIR + 'pic/process_jpg/'
 gifdir = PROJECT_DIR + 'pic/process_gif/'
 Netdir = PROJECT_DIR + 'Network/'
+DATApath = PROJECT_DIR + 'Dataset/tmp_boundary.npz'
 suffix = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
 pic_list = [0, 1, 2, 5, -2, -1]
 if isinstance(k+'',str):
@@ -52,13 +58,18 @@ maxiter_list = [int(eval(item)) for item in maxiter.split(',')]
 assert len(forward_solver_list) == k_len
 assert len(N_comp_list) == k_len
 
-
-q = q_gen(N, q_method, maxq)  # q:(N+1,N+1)
+q = q_gen(N , q_method, maxq) # q:(N+1,N+1)
 Q = q.reshape(-1, )
-N_gen = 1024
-q_gen = q_gen(N_gen, q_method, maxq)
-Q_gen = q_gen.reshape(-1,)
-f_data_np, partial_data_np = data_gen(Q_gen, N_gen, N, k_list, m, 0.0, scheme)
+assert load_boundary == 'T' or load_boundary == 'F'
+if load_boundary == 'T':
+    tmp_data = np.load(DATApath)
+    f_data_np, partial_data_np = tmp_data['f'], tmp_data['p']
+else:    
+    N = 512
+    qq = q_gen(N , q_method, maxq)
+    Q_gen = qq.reshape(-1,)
+    f_data_np, partial_data_np = data_gen(Q_gen, N, k_list, m, noise_level, scheme, bd_num, expand_times)
+    np.savez(DATApath, f = f_data_np, p = partial_data_np)
 # f_data_np:(k_len+1,m,N+1,N+1)
 # partial_data_np:(k_len+1,m,4N-4)
 f_data_list, partial_data_list = [], []
@@ -74,7 +85,6 @@ for i in range(k_len):
         NET_list.append(None)
         f_data_list.append(f_data_np[i])
         partial_data_list.append(partial_data_np[i])
-
     else:
         raise ValueError("Solver Error")
 print('Boundary data prepared'+'   '+str(datetime.now())[:-7])
@@ -90,9 +100,9 @@ for i in range(k_len):
     if Q0 is None:
         Q0 = Q * 0
     X_list.append(Q0)
-    Matrix_analysis(N_comp_list[i],scheme=scheme)
-    args1 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, True)
-    args2 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, False)
+    Matrix_analysis(N_comp_list[i],scheme=scheme,expand_times=expand_times)
+    args1 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, bd_num, expand_times, True)
+    args2 = (N, N_comp_list[i], k_list[i], f_data_list[i], partial_data_list[i], maxq, NET_list[i], device, NS_length, scheme, bd_num, expand_times, False)
     J00 = J_single_frequency(Q0, *args2)
     Jtt = J_single_frequency(Q, *args2)
     J00_str += str(J00)[:5]+','
@@ -113,7 +123,7 @@ ll = len(X_list)
 plot_list, label_list, Error_list = [], [], []
 for j in range(ll):
     Error_list.append(Error(X_list[j], Q))
-    plot_list.append(X_list[j].reshape((N + 1, N + 1)))
+    plot_list.append(X_list[j].reshape(N + 1, N + 1))
     label_list.append('Iter = ' + str(j))
 plot_list.append(Q.reshape((N + 1, N + 1)))
 label_list.append('Qt')

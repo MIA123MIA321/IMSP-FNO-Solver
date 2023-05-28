@@ -4,10 +4,11 @@
 N=64
 N_comp='64'
 k='20'
-m=16
-maxq=1.0
+m=32
+maxq=0.4
 q_method='TEST'
 noise_level=0.0
+bd_num=2
 # 以上是一些预设，可设置为benchmark
 
 ARGNAME='k'  
@@ -29,9 +30,12 @@ Opt () {
     --maxq ${maxq} \
     --maxiter $5 \
     --q_method ${q_method} \
+    --load_boundary $6 \
+    --NS_length $7 \
     --noise_level ${noise_level} \
     --forward_solver $2 \
     --title ${TITLE} \
+    --bd_num ${bd_num} \
     --output_filename ${OUTPUT_LOG} \
     >> ${TMP_PATH} 2>&1 &&
     python -u ${WRITE_PATH} \
@@ -51,9 +55,24 @@ TMP_PATH='.tmp.log'
 RES_DIR=${DIR}'pic/res/'
 
 echo > ${OUTPUT_LOG} &&
-# Opt '20,60,80' 'MUMPS,MUMPS,MUMPS' 1024 '128,256,512' '15,10,5' &&
-# Opt '20,60,80' 'NET,MUMPS,MUMPS' 1024 '64,256,512' '15,10,5' &&
-Opt '20' 'MUMPS' 1024 '128' '15' &&
+
+
+Opt '40' 'MUMPS' 512 '128' '15' 'F' 3 &&
+Opt '40' 'NET' 512 '64' '15' 'T' 3 &&
+Opt '40' 'NET' 512 '64' '15' 'T' 5 &&
+# Opt '20' 'MUMPS' 512 '64' '15' 'F' 3 &&
+# Opt '20' 'NET' 512 '64' '15' 'T' 3 &&
+
+
+# Opt '40,60,80' 'MUMPS,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'F' 3 &&
+# Opt '40,60,80' 'NET,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'T' 3 &&
+
+
+# Opt '20,60,80' 'MUMPS,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'F' 3 &&
+# Opt '20,60,80' 'NET,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'T' 3 &&
+# Opt '20,60,80' 'NET,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'T' 5 &&
+# Opt '20' 'MUMPS' 512 '64' '15' 'F' 3 &&
+# Opt '20' 'NET' 512 '64' '15' 'T' 3 &&
 
 
 python ${DRAW_PATH} \

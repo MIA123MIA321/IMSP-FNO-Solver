@@ -93,32 +93,53 @@ class LpLoss(object):
         return self.rel(x, y)
 
 
-def Diag_Gen(N, Q, k):
-    M = N + 1
-    diag0 = k * k * (1 + Q) - 4 * N * N+1j*2*k*N
-    matrix__ = diag0.reshape((M, M))
-    matrix__[0, 0]+=1j*2*k*N
-    matrix__[0, -1]+=1j*2*k*N
-    matrix__[-1, 0]+=1j*2*k*N
-    matrix__[-1, -1]+=1j*2*k*N
-    diag = matrix__.reshape(-1,)
-    return torch.from_numpy(diag).to(torch.complex64)
+# def Diag_Gen(N, Q, k):
+#     M = N + 1
+#     diag0 = k * k * (1 + Q) - 4 * N * N+1j*2*k*N
+#     matrix__ = diag0.reshape((M, M))
+#     matrix__[0, 0]+=1j*2*k*N
+#     matrix__[0, -1]+=1j*2*k*N
+#     matrix__[-1, 0]+=1j*2*k*N
+#     matrix__[-1, -1]+=1j*2*k*N
+#     diag = matrix__.reshape(-1,)
+#     return torch.from_numpy(diag).to(torch.complex64)
 
 
-def forward_conv(N,k,input_,padding = False):
-    kernel = torch.tensor([
-    [0.,   N*N,                0.],
-    [N*N,  k*k-4*N*N, N*N],
-    [0.,   N*N,                0.]]).to(input_.device)
-    kernel = kernel.unsqueeze(0).unsqueeze(0)
-    output_real = F.conv2d(input_[:,0].unsqueeze(1),kernel,stride=1,padding=0)
-    output_imag = F.conv2d(input_[:,1].unsqueeze(1),kernel,stride=1,padding=0)
-    output_ = torch.cat([output_real,output_imag],dim=1)
-    if padding:
-        return F.pad(output_,[1,1,1,1])
+# def forward_conv(N,k,input_,padding = False):
+#     kernel = torch.tensor([
+#     [0.,   N*N,                0.],
+#     [N*N,  k*k-4*N*N, N*N],
+#     [0.,   N*N,                0.]]).to(input_.device)
+#     kernel = kernel.unsqueeze(0).unsqueeze(0)
+#     output_real = F.conv2d(input_[:,0].unsqueeze(1),kernel,stride=1,padding=0)
+#     output_imag = F.conv2d(input_[:,1].unsqueeze(1),kernel,stride=1,padding=0)
+#     output_ = torch.cat([output_real,output_imag],dim=1)
+#     if padding:
+#         return F.pad(output_,[1,1,1,1])
+#     else:
+#         return output_
+
+
+def expand_grids(q,expand_times=1):
+    # N \times N --> N*expand_times \times N*expand_times
+    N = q.shape[0]
+    return np.pad(q,N//2*(expand_times-1))
+
+def squeeze_grids(q, expand_times=1,flatten=True):
+    # N \times N --> N/expand_times \times N/expand_times 
+    N = q.shape[0]
+    if len(q.shape) == 1:
+        N = int(np.sqrt(N))
+        q = q.reshape((N,N))
+    if expand_times > 1:
+        idx = ((N-1)//expand_times)//2*(expand_times-1)
+        out = q[idx:-idx,idx:-idx]
     else:
-        return output_
-
+        out = q
+    if flatten:
+        return out.reshape(-1,)
+    else:
+        return out
 
 def Type_Settle(x, Type, device = 'cpu'):
     if Type == 'np':
@@ -146,13 +167,15 @@ def Error(a, a_truth):
 
 
 def Round(vector, times):
-    SHAPE = vector.shape
-    vector1 = vector.reshape(-1, )
-    SHAPE1 = vector1.shape[0]
-    radius = (vector.max()-vector.min())/2
-    ERR = np.array([random.uniform(-radius * times, radius * times)
-                    for i in range(SHAPE1)])
-    return vector + ERR.reshape(SHAPE)
+    if times == 0.0:
+        return vector
+    else:
+        SHAPE = vector.shape
+        vector1 = vector.reshape(-1,)
+        SHAPE1 = vector1.shape[0]
+        ERR = np.array([random.uniform(-times, times)
+                        for i in range(SHAPE1)])
+        return vector + ERR.reshape(SHAPE)* vector
 
 
 def load_data(filename, device = 'cpu',angle_id = -1,
@@ -187,6 +210,11 @@ def load_data(filename, device = 'cpu',angle_id = -1,
             u_i = u_i.permute(1,0,2,3,4)
             u_NS = u_NS.permute(1,0,2,3,4,5)
             return q, wave, u_i, u_NS[:,:,0]
+        elif Usage == 'Train1':
+            q = q.unsqueeze(1).repeat((1,wave.shape[0],1,1,1))
+            wave = wave.permute(1,0,2,3,4)
+            u_t = u_t.permute(1,0,2,3,4)
+            return q, wave, u_t
         elif Usage == 'Test':
             return q, wave, u_i, u_NS, u_t
     else:
@@ -290,7 +318,7 @@ def plot_heatmap(q_list,title,picdir,gifdir,
     cv2.imwrite(picdir + title + '.jpg', img1)
     
     
-def INTERPOLATE(x, in_size, out_size, device):
+def INTERPOLATE(x, in_size, out_size):
     if isinstance(x, np.ndarray):
         x = x.reshape((in_size + 1, in_size + 1))
         l_in = np.linspace(0, 1, in_size + 1)
@@ -308,24 +336,60 @@ def INTERPOLATE(x, in_size, out_size, device):
         return x_out
 
     
-def data_projection(x,data_to_boundary = True):
+def data_projection(x,data_to_boundary = True, bd_num = 4):
+    # opposite sides
+    assert bd_num in [1,2,3,4]
     if data_to_boundary:
         x1 = x[...,1:-1,0]
         x2 = x[...,1:-1,-1]
         x3 = x[...,0,1:-1]
         x4 = x[...,-1,1:-1]
+        x_bd = [x1,x2,x3,x4]
         if isinstance(x, np.ndarray):
-            return np.concatenate([x1,x2,x3,x4])
+            return np.concatenate(x_bd[0:bd_num])
         elif isinstance(x, torch.Tensor):
-            return torch.cat([x1,x2,x3,x4],-1)
+            return torch.cat(x_bd[0:bd_num],-1)
     else:
-        N = x.shape[-1] // 4
+        N = x.shape[-1] // bd_num
         if isinstance(x, np.ndarray):
             output = np.zeros((N+2,N+2),dtype = np.complex128)
         elif isinstance(x, torch.Tensor):
             output = torch.zeros((x.shape[0],x.shape[1],N+2,N+2))
         output[...,1:-1,0]  = x[...,0*N:1*N]
-        output[...,1:-1,-1] = x[...,1*N:2*N]
-        output[...,0,1:-1]  = x[...,2*N:3*N]
-        output[...,-1,1:-1] = x[...,3*N:4*N]
+        if bd_num >= 2:
+            output[...,1:-1,-1] = x[...,1*N:2*N]
+        if bd_num >= 3:
+            output[...,0,1:-1]  = x[...,2*N:3*N]
+        if bd_num >= 4:
+            output[...,-1,1:-1] = x[...,3*N:4*N]
         return output
+
+
+
+# def data_projection(x,data_to_boundary = True, bd_num = 4):
+#     # adjacent sides
+#     assert bd_num in [1,2,3,4]
+#     if data_to_boundary:
+#         x1 = x[...,1:-1,0]
+#         x2 = x[...,0,1:-1]
+#         x3 = x[...,1:-1,-1]
+#         x4 = x[...,-1,1:-1]
+#         x_bd = [x1,x2,x3,x4]
+#         if isinstance(x, np.ndarray):
+#             return np.concatenate(x_bd[0:bd_num])
+#         elif isinstance(x, torch.Tensor):
+#             return torch.cat(x_bd[0:bd_num],-1)
+#     else:
+#         N = x.shape[-1] // bd_num
+#         if isinstance(x, np.ndarray):
+#             output = np.zeros((N+2,N+2),dtype = np.complex128)
+#         elif isinstance(x, torch.Tensor):
+#             output = torch.zeros((x.shape[0],x.shape[1],N+2,N+2))
+#         output[...,1:-1,0]  = x[...,0*N:1*N]
+#         if bd_num >= 2:
+#             output[...,0,1:-1] = x[...,1*N:2*N]
+#         if bd_num >= 3:
+#             output[...,1:-1,-1] = x[...,2*N:3*N]
+#         if bd_num >= 4:
+#             output[...,-1,1:-1] = x[...,3*N:4*N]
+#         return output

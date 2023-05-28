@@ -5,7 +5,7 @@ ctx = DMumpsContext()
 ctx.set_silent()
 
 
-def Matrix_Gen_5(N, Q, k):
+def Matrix_Gen_5(N, Q, k, expand_times):
     '''
     data1 : middle
     data2 : middle +- 1
@@ -13,13 +13,13 @@ def Matrix_Gen_5(N, Q, k):
     data4 : middle +- M^2
     '''
     M = N + 1
-    Matrix1 = (k * k * (1 + Q) - 4 * N * N).reshape(M,M)
+    Matrix1 = (k * k * (1 + Q) - 4 * N * N/(expand_times)**2).reshape(M,M)
     data1 = np.tile(Matrix1.reshape(-1,),2)
     
     Matrix2_plus = np.ones((M,M))
     Matrix2_plus[:,0] = 0
     Matrix2_plus[:,1] = 2
-    Matrix2_plus *= N * N
+    Matrix2_plus *= N * N/(expand_times)**2
     data2_plus = np.tile(Matrix2_plus.reshape(-1,),2)
     Matrix2_minus = Matrix2_plus[:,::-1]
     data2_minus = np.tile(Matrix2_minus.reshape(-1,),2)
@@ -32,7 +32,7 @@ def Matrix_Gen_5(N, Q, k):
     Matrix4 = np.ones((M, M))
     Matrix4[0, 0] = Matrix4[-1, 0] = Matrix4[-1, -1] = Matrix4[0, -1] = 2
     Matrix4[1:-1, 1:-1] = 0
-    Matrix4 *= 2 * k * N
+    Matrix4 *= 2 * k * N/(expand_times)
     data4_minus = np.tile(Matrix4.reshape(-1), 2)
     data4_plus = -data4_minus
     
@@ -145,10 +145,10 @@ def Matrix_Gen_9(N, Q, k):
     return mat
 
 
-def Matrix_Gen(N, Q, k,scheme = 5,ToTensor=False,Transpose=False):
+def Matrix_Gen(N, Q, k,scheme = 5,expand_times=1,ToTensor=False,Transpose=False):
     assert scheme==5 or scheme==9
     if scheme == 5:
-        mat = Matrix_Gen_5(N,Q,k)
+        mat = Matrix_Gen_5(N,Q,k,expand_times)
     else:
         mat = Matrix_Gen_9(N,Q,k)
     if Transpose:
@@ -180,11 +180,11 @@ def F_laplacian(F):
     return f1.reshape(-1)
 
     
-def Matrix_analysis(N, k = 2, scheme = 5):
+def Matrix_analysis(N, k = 2, scheme = 5, expand_times = 1):
     global ctx
     assert scheme==5 or scheme==9
-    Q = np.zeros((N+1) ** 2,)
-    _Matrix_ = Matrix_Gen(N, Q, k,scheme)
+    Q = np.zeros((N * expand_times+1) ** 2,)
+    _Matrix_ = Matrix_Gen(N * expand_times, Q, k,scheme,expand_times)
     ctx.set_shape(_Matrix_.shape[0])
     if ctx.myid == 0:
         ctx.set_centralized_assembled_rows_cols(
@@ -192,23 +192,26 @@ def Matrix_analysis(N, k = 2, scheme = 5):
     ctx.run(job = 1)
 
 
-def Matrix_factorize(N, k, Q = None,scheme = 5):
+def Matrix_factorize(N, k, Q = None,scheme = 5,expand_times = 1):
     # Q:((N+1)**2,)
     global ctx
     assert scheme==5 or scheme==9
     if Q is None:
-        Q = np.zeros((N+1) ** 2,)
-    _Matrix_ = Matrix_Gen(N, Q, k,scheme)
+        Q = np.zeros((N * expand_times+1) ** 2,)
+    else:
+        Q = expand_grids(Q.reshape(N+1,N+1),expand_times).reshape(-1,)
+    _Matrix_ = Matrix_Gen(N*expand_times, Q, k, scheme,expand_times)
     ctx.set_centralized_assembled_values(_Matrix_.data)
     ctx.run(job = 2)
     return
 
 
-def Matrix_solve(F: np.ndarray, one_dim = True,scheme=5):
+def Matrix_solve(F: np.ndarray, one_dim = True,scheme=5,expand_times=1):
     # F:((N+1)**2,) --> ((N+1)**2,)
     global ctx
     assert scheme==5 or scheme==9
-    M = F.shape[0]
+    M = int(np.sqrt(F.shape[0]))
+    F = expand_grids(F.reshape(M,M),expand_times).reshape(-1,)
     if scheme == 9:
         F = F + F_laplacian(F)/12
     F = np.append(F.real, F.imag)
@@ -217,20 +220,18 @@ def Matrix_solve(F: np.ndarray, one_dim = True,scheme=5):
     ctx.set_rhs(x)
     ctx.run(job = 3)
     tmp = x.reshape(-1, )
-    output = tmp[:M] + 1j * tmp[M:]
-    if not one_dim:
-        N = int(np.sqrt(M) - 1)
-        output = output.reshape(N + 1, N + 1)
+    output = tmp[:((M-1)*expand_times+1)**2] + 1j * tmp[((M-1)*expand_times+1)**2:]
+    output = squeeze_grids(output,expand_times,one_dim)
     return output
     
     
 def NET_method(N, N_comp, q, k, f, NET, device, length = 3):
     assert N_comp == 64
-    q = INTERPOLATE(q,N,N_comp,device)
-    f = INTERPOLATE(f,N,N_comp,device)
+    q = INTERPOLATE(q,N,N_comp)
+    f = INTERPOLATE(f,N,N_comp)
     if torch.norm(f) < 1e-8:
         ANS = torch.zeros_like(f).to(device)
-        return INTERPOLATE(ANS,N_comp,N,device) 
+        return INTERPOLATE(ANS,N_comp,N) 
     U_NET = NET(torch.cat([torch.ones_like(q), -f/(k*k)],1))
     SUM_NET = U_NET.clone().detach()
     if torch.norm(q) > 1e-8:
@@ -244,4 +245,4 @@ def NET_method(N, N_comp, q, k, f, NET, device, length = 3):
             SUM_NET = SUM_NET_OLD + U_NET
             del SUM_NET_OLD
     del U_NET
-    return INTERPOLATE(SUM_NET,N_comp,N,device) 
+    return INTERPOLATE(SUM_NET,N_comp,N) 

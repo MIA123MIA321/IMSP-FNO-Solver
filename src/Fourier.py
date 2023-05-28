@@ -156,3 +156,29 @@ class FNO2d_modified(nn.Module):
             out_1 = self.conv(q*f[:,1:2])
         out = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
         return out
+    
+    
+class FNO2d_stack(nn.Module):
+    def __init__(self, modes, width, depth):
+        super(FNO2d_stack, self).__init__()
+        self.modes = modes
+        self.width = width
+        self.depth = depth
+        self.conv1 = FNO2d_part(self.modes, self.width, self.depth, 1, 2)
+        self.conv2 = FNO2d_part(self.modes, self.width, self.depth, 1, 2)
+    def forward(self,data):
+        q = data[:,0:1]
+        f = data[:,1:3]
+        out_0 = self.conv1(q*f[:,0:1])
+        if torch.norm(f[:,1:2]) < 1e-8:
+            out_1 = torch.zeros_like(out_0)
+        else:
+            out_1 = self.conv1(q*f[:,1:2])
+        f = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
+        out_0 = self.conv2(q*f[:,0:1])
+        if torch.norm(f[:,1:2]) < 1e-8:
+            out_1 = torch.zeros_like(out_0)
+        else:
+            out_1 = self.conv2(q*f[:,1:2])
+        f = torch.stack([out_0[:,0]-out_1[:,1],out_0[:,1]+out_1[:,0]],1)
+        return f

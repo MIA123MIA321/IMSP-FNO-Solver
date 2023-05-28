@@ -1,10 +1,10 @@
 from Solver import *
 from q_method import *
-from utils import default_timer
+from utils import default_timer, expand_grids
 
 
 class Datasets:
-    def __init__(self, nsample, comp_grid = 512, k = 20, qmethod = 'G', times = 4, 
+    def __init__(self, nsample, comp_grid = 256, out_grid = 128, k = 20, qmethod = 'G', 
                  maxq = 0.1, label = '', R=200,
                  angle_TYPE = 'P', angle_total = 64,
                  angle_for_test = 1, angle_mode = 'first',
@@ -15,8 +15,8 @@ class Datasets:
         '''
         self.nsample = nsample
         self.comp_grid = comp_grid
+        self.out_grid = out_grid
         self.k = k
-        self.times = times
         self.qmethod = qmethod
         self.maxq = maxq
         self.label = label
@@ -25,6 +25,8 @@ class Datasets:
                       direct = 0, left = 0.2, right = 0.8)
         self.GAUSS = dict(num = 6, left = 0.1, right = 0.9, R = R)
         self.ANGLE = dict(TYPE = angle_TYPE, total = angle_total, mode = angle_mode)
+        self.expand_times = 2
+        self.times = self.comp_grid * self.expand_times // self.out_grid
         if self.ANGLE['TYPE'] == 'P':
             self.ANGLE['ntest'] = angle_for_test
         elif self.ANGLE['TYPE'] == 'O':
@@ -79,18 +81,18 @@ class Datasets:
 
     def u_data_gen(self, q_data, sol_type):
         ctx = DMumpsContext()
-        Matrix_analysis(self.comp_grid)
+        Matrix_analysis(self.comp_grid, expand_times = self.expand_times)
         if sol_type == 'init':
-            Matrix_factorize(self.comp_grid, self.k)
+            Matrix_factorize(self.comp_grid, self.k, expand_times = self.expand_times)
         sol = np.zeros((self.ANGLE['ntest'], self.nsample, 2, self.comp_grid + 1, self.comp_grid + 1))
         WAVE_list = self.wave_gen('comp')
         for i in range(self.nsample):
             Q = q_data[i].reshape(-1,)
             if sol_type == 'total':
-                Matrix_factorize(self.comp_grid, self.k, Q)
+                Matrix_factorize(self.comp_grid, self.k, Q, expand_times = self.expand_times)
             for order in range(self.ANGLE['ntest']):
                 print('{}     angle{}     n{}'.format(sol_type, order, i))
-                tmp = Matrix_solve(-self.k * self.k * WAVE_list[order] * Q).reshape(self.comp_grid + 1, self.comp_grid + 1)
+                tmp = Matrix_solve(-self.k * self.k * WAVE_list[order] * Q, expand_times = self.expand_times).reshape(self.comp_grid + 1, self.comp_grid + 1)
                 sol[order,i] = np.stack((tmp.real, tmp.imag), 0)  
         ctx.destroy()
         return sol
@@ -101,8 +103,8 @@ class Datasets:
             ctx = DMumpsContext()
             ctx.set_silent()
             Q = q.reshape(self.nsample,-1)
-            Matrix_analysis(self.comp_grid)
-            Matrix_factorize(self.comp_grid, self.k)
+            Matrix_analysis(self.comp_grid,expand_times = self.expand_times)
+            Matrix_factorize(self.comp_grid, self.k, expand_times = self.expand_times)
             sol = np.zeros((self.ANGLE['ntest'], self.nsample, self.NS['length'],
                             2, self.comp_grid + 1, self.comp_grid + 1))
             for order_id in range(self.ANGLE['ntest']):
@@ -110,7 +112,7 @@ class Datasets:
                 for j in range(self.NS['length']):
                     for i in range(self.nsample):
                         f_in = (u_now[i,0]+1j*u_now[i,1]).reshape(-1,)
-                        tmp = Matrix_solve(-self.k * self.k * Q[i] * f_in)
+                        tmp = Matrix_solve(-self.k * self.k * Q[i] * f_in,expand_times = self.expand_times)
                         tmp = tmp.reshape(self.comp_grid + 1,self.comp_grid + 1)
                         u_now[i] = np.stack((tmp.real,tmp.imag),0)
                         print('NS     angle{}     length{}     n{}'.format(order_id, j, i))
@@ -157,13 +159,13 @@ if __name__ == '__main__':
     R = 200
     label = 'R200'
     angle_TYPE = 'P'
-    angle_for_test = 1
+    angle_for_test = 4
     angle_mode = 'uniform'
     maxq = 0.1
-    comp_grid = 512
-    times = 4
+    comp_grid = 256
+    out_grid = 128
     Data = Datasets(nsample, k = k, qmethod = qmethod, label = label, R = R,
-                    maxq = maxq, comp_grid = comp_grid, times = times, 
+                    maxq = maxq, comp_grid = comp_grid, out_grid = out_grid, 
                     angle_TYPE = angle_TYPE, angle_for_test = angle_for_test,
                     angle_mode = angle_mode)
     Data.save_data()

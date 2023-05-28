@@ -1,67 +1,260 @@
+nohup: ignoring input
 init     angle0     n0
+init     angle1     n0
+init     angle2     n0
+init     angle3     n0
 init     angle0     n1
+init     angle1     n1
+init     angle2     n1
+init     angle3     n1
 init     angle0     n2
+init     angle1     n2
+init     angle2     n2
+init     angle3     n2
 init     angle0     n3
+init     angle1     n3
+init     angle2     n3
+init     angle3     n3
 init     angle0     n4
+init     angle1     n4
+init     angle2     n4
+init     angle3     n4
 init     angle0     n5
+init     angle1     n5
+init     angle2     n5
+init     angle3     n5
 init     angle0     n6
+init     angle1     n6
+init     angle2     n6
+init     angle3     n6
 init     angle0     n7
+init     angle1     n7
+init     angle2     n7
+init     angle3     n7
 init     angle0     n8
+init     angle1     n8
+init     angle2     n8
+init     angle3     n8
 init     angle0     n9
+init     angle1     n9
+init     angle2     n9
+init     angle3     n9
 init     angle0     n10
+init     angle1     n10
+init     angle2     n10
+init     angle3     n10
 init     angle0     n11
+init     angle1     n11
+init     angle2     n11
+init     angle3     n11
 init     angle0     n12
+init     angle1     n12
+init     angle2     n12
+init     angle3     n12
 init     angle0     n13
+init     angle1     n13
+init     angle2     n13
+init     angle3     n13
 init     angle0     n14
+init     angle1     n14
+init     angle2     n14
+init     angle3     n14
 init     angle0     n15
+init     angle1     n15
+init     angle2     n15
+init     angle3     n15
 init     angle0     n16
+init     angle1     n16
+init     angle2     n16
+init     angle3     n16
 init     angle0     n17
+init     angle1     n17
+init     angle2     n17
+init     angle3     n17
 init     angle0     n18
+init     angle1     n18
+init     angle2     n18
+init     angle3     n18
 init     angle0     n19
+init     angle1     n19
+init     angle2     n19
+init     angle3     n19
 init     angle0     n20
+init     angle1     n20
+init     angle2     n20
+init     angle3     n20
 init     angle0     n21
+init     angle1     n21
+init     angle2     n21
+init     angle3     n21
 init     angle0     n22
+init     angle1     n22
+init     angle2     n22
+init     angle3     n22
 init     angle0     n23
+init     angle1     n23
+init     angle2     n23
+init     angle3     n23
 init     angle0     n24
+init     angle1     n24
+init     angle2     n24
+init     angle3     n24
 init     angle0     n25
+init     angle1     n25
+init     angle2     n25
+init     angle3     n25
 init     angle0     n26
+init     angle1     n26
+init     angle2     n26
+init     angle3     n26
 init     angle0     n27
+init     angle1     n27
+init     angle2     n27
+init     angle3     n27
 init     angle0     n28
+init     angle1     n28
+init     angle2     n28
+init     angle3     n28
 init     angle0     n29
+init     angle1     n29
+init     angle2     n29
+init     angle3     n29
 init     angle0     n30
+init     angle1     n30
+init     angle2     n30
+init     angle3     n30
 init     angle0     n31
+init     angle1     n31
+init     angle2     n31
+init     angle3     n31
 total     angle0     n0
+total     angle1     n0
+total     angle2     n0
+total     angle3     n0
 total     angle0     n1
+total     angle1     n1
+total     angle2     n1
+total     angle3     n1
 total     angle0     n2
+total     angle1     n2
+total     angle2     n2
+total     angle3     n2
 total     angle0     n3
+total     angle1     n3
+total     angle2     n3
+total     angle3     n3
 total     angle0     n4
+total     angle1     n4
+total     angle2     n4
+total     angle3     n4
 total     angle0     n5
+total     angle1     n5
+total     angle2     n5
+total     angle3     n5
 total     angle0     n6
+total     angle1     n6
+total     angle2     n6
+total     angle3     n6
 total     angle0     n7
+total     angle1     n7
+total     angle2     n7
+total     angle3     n7
 total     angle0     n8
+total     angle1     n8
+total     angle2     n8
+total     angle3     n8
 total     angle0     n9
+total     angle1     n9
+total     angle2     n9
+total     angle3     n9
 total     angle0     n10
+total     angle1     n10
+total     angle2     n10
+total     angle3     n10
 total     angle0     n11
+total     angle1     n11
+total     angle2     n11
+total     angle3     n11
 total     angle0     n12
+total     angle1     n12
+total     angle2     n12
+total     angle3     n12
 total     angle0     n13
+total     angle1     n13
+total     angle2     n13
+total     angle3     n13
 total     angle0     n14
+total     angle1     n14
+total     angle2     n14
+total     angle3     n14
 total     angle0     n15
+total     angle1     n15
+total     angle2     n15
+total     angle3     n15
 total     angle0     n16
+total     angle1     n16
+total     angle2     n16
+total     angle3     n16
 total     angle0     n17
+total     angle1     n17
+total     angle2     n17
+total     angle3     n17
 total     angle0     n18
+total     angle1     n18
+total     angle2     n18
+total     angle3     n18
 total     angle0     n19
+total     angle1     n19
+total     angle2     n19
+total     angle3     n19
 total     angle0     n20
+total     angle1     n20
+total     angle2     n20
+total     angle3     n20
 total     angle0     n21
+total     angle1     n21
+total     angle2     n21
+total     angle3     n21
 total     angle0     n22
+total     angle1     n22
+total     angle2     n22
+total     angle3     n22
 total     angle0     n23
+total     angle1     n23
+total     angle2     n23
+total     angle3     n23
 total     angle0     n24
+total     angle1     n24
+total     angle2     n24
+total     angle3     n24
 total     angle0     n25
+total     angle1     n25
+total     angle2     n25
+total     angle3     n25
 total     angle0     n26
+total     angle1     n26
+total     angle2     n26
+total     angle3     n26
 total     angle0     n27
+total     angle1     n27
+total     angle2     n27
+total     angle3     n27
 total     angle0     n28
+total     angle1     n28
+total     angle2     n28
+total     angle3     n28
 total     angle0     n29
+total     angle1     n29
+total     angle2     n29
+total     angle3     n29
 total     angle0     n30
+total     angle1     n30
+total     angle2     n30
+total     angle3     n30
 total     angle0     n31
+total     angle1     n31
+total     angle2     n31
+total     angle3     n31
 NS     angle0     length0     n0
 NS     angle0     length0     n1
 NS     angle0     length0     n2
@@ -158,6 +351,294 @@ NS     angle0     length2     n28
 NS     angle0     length2     n29
 NS     angle0     length2     n30
 NS     angle0     length2     n31
+NS     angle1     length0     n0
+NS     angle1     length0     n1
+NS     angle1     length0     n2
+NS     angle1     length0     n3
+NS     angle1     length0     n4
+NS     angle1     length0     n5
+NS     angle1     length0     n6
+NS     angle1     length0     n7
+NS     angle1     length0     n8
+NS     angle1     length0     n9
+NS     angle1     length0     n10
+NS     angle1     length0     n11
+NS     angle1     length0     n12
+NS     angle1     length0     n13
+NS     angle1     length0     n14
+NS     angle1     length0     n15
+NS     angle1     length0     n16
+NS     angle1     length0     n17
+NS     angle1     length0     n18
+NS     angle1     length0     n19
+NS     angle1     length0     n20
+NS     angle1     length0     n21
+NS     angle1     length0     n22
+NS     angle1     length0     n23
+NS     angle1     length0     n24
+NS     angle1     length0     n25
+NS     angle1     length0     n26
+NS     angle1     length0     n27
+NS     angle1     length0     n28
+NS     angle1     length0     n29
+NS     angle1     length0     n30
+NS     angle1     length0     n31
+NS     angle1     length1     n0
+NS     angle1     length1     n1
+NS     angle1     length1     n2
+NS     angle1     length1     n3
+NS     angle1     length1     n4
+NS     angle1     length1     n5
+NS     angle1     length1     n6
+NS     angle1     length1     n7
+NS     angle1     length1     n8
+NS     angle1     length1     n9
+NS     angle1     length1     n10
+NS     angle1     length1     n11
+NS     angle1     length1     n12
+NS     angle1     length1     n13
+NS     angle1     length1     n14
+NS     angle1     length1     n15
+NS     angle1     length1     n16
+NS     angle1     length1     n17
+NS     angle1     length1     n18
+NS     angle1     length1     n19
+NS     angle1     length1     n20
+NS     angle1     length1     n21
+NS     angle1     length1     n22
+NS     angle1     length1     n23
+NS     angle1     length1     n24
+NS     angle1     length1     n25
+NS     angle1     length1     n26
+NS     angle1     length1     n27
+NS     angle1     length1     n28
+NS     angle1     length1     n29
+NS     angle1     length1     n30
+NS     angle1     length1     n31
+NS     angle1     length2     n0
+NS     angle1     length2     n1
+NS     angle1     length2     n2
+NS     angle1     length2     n3
+NS     angle1     length2     n4
+NS     angle1     length2     n5
+NS     angle1     length2     n6
+NS     angle1     length2     n7
+NS     angle1     length2     n8
+NS     angle1     length2     n9
+NS     angle1     length2     n10
+NS     angle1     length2     n11
+NS     angle1     length2     n12
+NS     angle1     length2     n13
+NS     angle1     length2     n14
+NS     angle1     length2     n15
+NS     angle1     length2     n16
+NS     angle1     length2     n17
+NS     angle1     length2     n18
+NS     angle1     length2     n19
+NS     angle1     length2     n20
+NS     angle1     length2     n21
+NS     angle1     length2     n22
+NS     angle1     length2     n23
+NS     angle1     length2     n24
+NS     angle1     length2     n25
+NS     angle1     length2     n26
+NS     angle1     length2     n27
+NS     angle1     length2     n28
+NS     angle1     length2     n29
+NS     angle1     length2     n30
+NS     angle1     length2     n31
+NS     angle2     length0     n0
+NS     angle2     length0     n1
+NS     angle2     length0     n2
+NS     angle2     length0     n3
+NS     angle2     length0     n4
+NS     angle2     length0     n5
+NS     angle2     length0     n6
+NS     angle2     length0     n7
+NS     angle2     length0     n8
+NS     angle2     length0     n9
+NS     angle2     length0     n10
+NS     angle2     length0     n11
+NS     angle2     length0     n12
+NS     angle2     length0     n13
+NS     angle2     length0     n14
+NS     angle2     length0     n15
+NS     angle2     length0     n16
+NS     angle2     length0     n17
+NS     angle2     length0     n18
+NS     angle2     length0     n19
+NS     angle2     length0     n20
+NS     angle2     length0     n21
+NS     angle2     length0     n22
+NS     angle2     length0     n23
+NS     angle2     length0     n24
+NS     angle2     length0     n25
+NS     angle2     length0     n26
+NS     angle2     length0     n27
+NS     angle2     length0     n28
+NS     angle2     length0     n29
+NS     angle2     length0     n30
+NS     angle2     length0     n31
+NS     angle2     length1     n0
+NS     angle2     length1     n1
+NS     angle2     length1     n2
+NS     angle2     length1     n3
+NS     angle2     length1     n4
+NS     angle2     length1     n5
+NS     angle2     length1     n6
+NS     angle2     length1     n7
+NS     angle2     length1     n8
+NS     angle2     length1     n9
+NS     angle2     length1     n10
+NS     angle2     length1     n11
+NS     angle2     length1     n12
+NS     angle2     length1     n13
+NS     angle2     length1     n14
+NS     angle2     length1     n15
+NS     angle2     length1     n16
+NS     angle2     length1     n17
+NS     angle2     length1     n18
+NS     angle2     length1     n19
+NS     angle2     length1     n20
+NS     angle2     length1     n21
+NS     angle2     length1     n22
+NS     angle2     length1     n23
+NS     angle2     length1     n24
+NS     angle2     length1     n25
+NS     angle2     length1     n26
+NS     angle2     length1     n27
+NS     angle2     length1     n28
+NS     angle2     length1     n29
+NS     angle2     length1     n30
+NS     angle2     length1     n31
+NS     angle2     length2     n0
+NS     angle2     length2     n1
+NS     angle2     length2     n2
+NS     angle2     length2     n3
+NS     angle2     length2     n4
+NS     angle2     length2     n5
+NS     angle2     length2     n6
+NS     angle2     length2     n7
+NS     angle2     length2     n8
+NS     angle2     length2     n9
+NS     angle2     length2     n10
+NS     angle2     length2     n11
+NS     angle2     length2     n12
+NS     angle2     length2     n13
+NS     angle2     length2     n14
+NS     angle2     length2     n15
+NS     angle2     length2     n16
+NS     angle2     length2     n17
+NS     angle2     length2     n18
+NS     angle2     length2     n19
+NS     angle2     length2     n20
+NS     angle2     length2     n21
+NS     angle2     length2     n22
+NS     angle2     length2     n23
+NS     angle2     length2     n24
+NS     angle2     length2     n25
+NS     angle2     length2     n26
+NS     angle2     length2     n27
+NS     angle2     length2     n28
+NS     angle2     length2     n29
+NS     angle2     length2     n30
+NS     angle2     length2     n31
+NS     angle3     length0     n0
+NS     angle3     length0     n1
+NS     angle3     length0     n2
+NS     angle3     length0     n3
+NS     angle3     length0     n4
+NS     angle3     length0     n5
+NS     angle3     length0     n6
+NS     angle3     length0     n7
+NS     angle3     length0     n8
+NS     angle3     length0     n9
+NS     angle3     length0     n10
+NS     angle3     length0     n11
+NS     angle3     length0     n12
+NS     angle3     length0     n13
+NS     angle3     length0     n14
+NS     angle3     length0     n15
+NS     angle3     length0     n16
+NS     angle3     length0     n17
+NS     angle3     length0     n18
+NS     angle3     length0     n19
+NS     angle3     length0     n20
+NS     angle3     length0     n21
+NS     angle3     length0     n22
+NS     angle3     length0     n23
+NS     angle3     length0     n24
+NS     angle3     length0     n25
+NS     angle3     length0     n26
+NS     angle3     length0     n27
+NS     angle3     length0     n28
+NS     angle3     length0     n29
+NS     angle3     length0     n30
+NS     angle3     length0     n31
+NS     angle3     length1     n0
+NS     angle3     length1     n1
+NS     angle3     length1     n2
+NS     angle3     length1     n3
+NS     angle3     length1     n4
+NS     angle3     length1     n5
+NS     angle3     length1     n6
+NS     angle3     length1     n7
+NS     angle3     length1     n8
+NS     angle3     length1     n9
+NS     angle3     length1     n10
+NS     angle3     length1     n11
+NS     angle3     length1     n12
+NS     angle3     length1     n13
+NS     angle3     length1     n14
+NS     angle3     length1     n15
+NS     angle3     length1     n16
+NS     angle3     length1     n17
+NS     angle3     length1     n18
+NS     angle3     length1     n19
+NS     angle3     length1     n20
+NS     angle3     length1     n21
+NS     angle3     length1     n22
+NS     angle3     length1     n23
+NS     angle3     length1     n24
+NS     angle3     length1     n25
+NS     angle3     length1     n26
+NS     angle3     length1     n27
+NS     angle3     length1     n28
+NS     angle3     length1     n29
+NS     angle3     length1     n30
+NS     angle3     length1     n31
+NS     angle3     length2     n0
+NS     angle3     length2     n1
+NS     angle3     length2     n2
+NS     angle3     length2     n3
+NS     angle3     length2     n4
+NS     angle3     length2     n5
+NS     angle3     length2     n6
+NS     angle3     length2     n7
+NS     angle3     length2     n8
+NS     angle3     length2     n9
+NS     angle3     length2     n10
+NS     angle3     length2     n11
+NS     angle3     length2     n12
+NS     angle3     length2     n13
+NS     angle3     length2     n14
+NS     angle3     length2     n15
+NS     angle3     length2     n16
+NS     angle3     length2     n17
+NS     angle3     length2     n18
+NS     angle3     length2     n19
+NS     angle3     length2     n20
+NS     angle3     length2     n21
+NS     angle3     length2     n22
+NS     angle3     length2     n23
+NS     angle3     length2     n24
+NS     angle3     length2     n25
+NS     angle3     length2     n26
+NS     angle3     length2     n27
+NS     angle3     length2     n28
+NS     angle3     length2     n29
+NS     angle3     length2     n30
+NS     angle3     length2     n31
 completed
 
 Entering DMUMPS 5.2.1 from C interface with JOB =  -2

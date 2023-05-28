@@ -7,7 +7,15 @@ def q_T(N, q_value_1 = 1, q_value_2 = -1, x1 = 0.2, x2 = 0.4,
     q = np.zeros((N + 1, N + 1))
     q[int(x1 * N):int(x2 * N), int(y1 * N):int(y4 * N)] = q_value_1
     q[int(x2 * N):int(x3 * N), int(y2 * N):int(y3 * N)] = q_value_2
-    q = gaussian_filter(q, sigma)
+    q = gaussian_filter(q, sigma/128*N)
+    return q
+
+def q_Square(N, q_value = 1, left = 0.2, right = 0.8, bottom = 0.2, top = 0.8, sigma = 0):
+    left1,right1 = min(left,right),max(left,right)
+    bottom1,top1 = min(bottom,top),max(bottom,top)
+    q = np.zeros((N + 1, N + 1))
+    q[int(left1 * N):int(right1 * N), int(bottom1 * N):int(top1 * N)] = q_value
+    q = gaussian_filter(q, sigma/128*N)
     return q
 
 
@@ -43,24 +51,41 @@ def q_Continuous(N):
 
 
 def q_test(N):
-    q1 = np.zeros((N+1, N+1))
-    q2 = np.zeros((N+1, N+1))
-    random.seed(0)
-    for i in range(5):
-        x_axis = random.uniform(0.2,0.8)
-        y_axis = random.uniform(0.2,0.8)
-        R1 = random.uniform(150,250)
-        R2 = random.uniform(150,250)
-        gamma = random.uniform(-1,1)
-        q1 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
-    for i in range(5):
-        x_axis = random.uniform(0.2,0.8)
-        y_axis = random.uniform(0.2,0.8)
-        R1 = random.uniform(150,250)
-        R2 = random.uniform(150,250)
-        gamma = random.uniform(-1,1)
-        q2 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
-    return 0.8*q_circle(N, radius = 0.3) - 0.5*q_circle(N, radius = 0.2) + q2
+    # q1 = np.zeros((N+1, N+1))
+    # q2 = np.zeros((N+1, N+1))
+    # random.seed(0)
+    # for i in range(5):
+    #     x_axis = random.uniform(0.2,0.8)
+    #     y_axis = random.uniform(0.2,0.8)
+    #     R1 = random.uniform(150,250)
+    #     R2 = random.uniform(150,250)
+    #     gamma = random.uniform(-1,1)
+    #     q1 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
+    # for i in range(5):
+    #     x_axis = random.uniform(0.2,0.8)
+    #     y_axis = random.uniform(0.2,0.8)
+    #     R1 = random.uniform(150,250)
+    #     R2 = random.uniform(150,250)
+    #     gamma = random.uniform(-1,1)
+    #     q2 += q_Gaussian(N, x_axis, y_axis, R1, R2, gamma)
+    # return 2*q_T(N,sigma = 1)+0.8*q_circle(N, radius = 0.3) - 0.5*q_circle(N, radius = 0.2) + q2
+    # return 2*q_T(N,sigma = 2) - q_T(N,2,-3,0.3,0.6,0.7,0.45,0.55,0.7,0.82,3)+0.8*q_circle(N, radius = 0.3) - 0.5*q_circle(N, radius = 0.2) + q2
+    # return 2*q_T(N,sigma = 1) - q_T(N,2,-3,0.3,0.6,0.7,0.45,0.55,0.7,0.82,2)
+    # q = np.zeros((N+1, N+1))
+    # q += q_Square(N,1,0.2,0.35,0.65,0.8,1)
+    # q += q_Square(N,-2,0.55,0.8,0.6,0.85,2)
+    # q += q_Square(N,3,0.65,0.8,0.2,0.35,3)
+    # q += q_Square(N,-4,0.25,0.3,0.1,0.45,4)
+    # q += - 1.5*q_circle(N, radius = 0.04)
+    # q +=  5*q_circle(N, radius = 0.1)
+    # return q
+    q = np.zeros((N+1, N+1))
+    q += q_T(N,2,3,0.2,0.3,0.45,0.55,0.65,0.7,0.85,3)
+    q -= q_T(N,4,5,0.6,0.75,0.8,0.15,0.2,0.3,0.35,3)[::-1,:]
+    q += q_Square(N,3,0.65,0.8,0.2,0.35,3)
+    q -= q_Square(N,4,0.25,0.3,0.1,0.45,4)[::-1,::-1]
+    return q
+        
     # return q_Gaussian(N)
     # return q_T(N, sigma = 5)
     # return q_circle(N, radius = 0.3)
@@ -96,7 +121,9 @@ def q_gen(N, method = 'T', gamma = 1):
     elif method == 'TEST':
         q = q_test(N)
     Max_Value = np.max(np.abs(q))
-    return gamma * q / Max_Value
+    q =  gamma * q / Max_Value
+    
+    return q
 
 
 def f_gen(N,k,m):
