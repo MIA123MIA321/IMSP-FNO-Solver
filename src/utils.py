@@ -21,6 +21,7 @@ import os
 import re
 import seaborn as sns
 import matplotlib.pyplot as plt
+from  matplotlib  import cm
 import imageio
 from PIL import Image
 import sys
@@ -29,8 +30,18 @@ import sys
 device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 X_list = []
 iters = 0
+# heatmap_params = {
+#     'cmap': 'gist_rainbow',
+#     'xticklabels': False,
+#     'yticklabels': False
+# }
 heatmap_params = {
-    'cmap': 'gist_rainbow',
+    'cmap': cm.seismic,
+    'xticklabels': False,
+    'yticklabels': False
+}
+heatmap_params = {
+    'cmap': 'hot',
     'xticklabels': False,
     'yticklabels': False
 }
@@ -183,7 +194,7 @@ def load_data(filename, device = 'cpu',angle_id = -1,
     Dataset_dir = '/data/liuziyang/Programs/pde_solver/Dataset/'
     data = np.load(Dataset_dir+filename+'.npz', allow_pickle=True)    
     q = Type_Settle(data['q'], 'torch', device) # (nsample, 1, 65, 65)
-    times = q.shape[-1] // 64
+    times = q.shape[-1] // output_size
     q = q[...,::times,::times]
     wave = Type_Settle(data['WAVE'][...,::times,::times], 'torch', device) 
     # (angle_for_test, nsample, 1/2, 65, 65)

@@ -20,6 +20,7 @@ parser.add_argument('--output_filename', type = str, required=True)
 parser.add_argument('--NS_length', type = int, default = 3)
 parser.add_argument('--load_boundary', type = str, default = 'F')
 parser.add_argument('--bd_num', type = int, default = 4)
+parser.add_argument('--scheme', type = int, default = -1)
 args = parser.parse_args()
 print('Boundary data preparing'+'  '+str(datetime.now())[:-7])
 PROJECT_DIR = args.PROJECT_DIR
@@ -38,7 +39,7 @@ title = args.title
 output_filename = args.output_filename
 NS_length = args.NS_length
 load_boundary = args.load_boundary
-scheme = 5
+scheme = args.scheme
 expand_times = 2
 bd_num = args.bd_num
 
@@ -46,7 +47,10 @@ jpgdir = PROJECT_DIR + 'pic/process_jpg/'
 gifdir = PROJECT_DIR + 'pic/process_gif/'
 Netdir = PROJECT_DIR + 'Network/'
 DATApath = PROJECT_DIR + 'Dataset/tmp_boundary.npz'
-suffix = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
+suffix = dict()
+suffix[20] = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
+suffix[40] = '_P,4,64_uniform_G_NS0.1_T_R200,12,32_1.pth'
+suffix[80] = '_P_8,64,uniform_G_0.1_NST_R200_30,64,4_5.pth'
 pic_list = [0, 1, 2, 5, -2, -1]
 if isinstance(k+'',str):
     tmp_k = k.split(',')
@@ -76,7 +80,7 @@ f_data_list, partial_data_list = [], []
 NET_list = []
 for i in range(k_len):
     if forward_solver_list[i] == 'NET':
-        NET_list.append(torch.load(Netdir+'k{}'.format(k_list[i])+suffix, map_location = device))
+        NET_list.append(torch.load(Netdir+'k{}_{}'.format(k_list[i],scheme)+suffix[k_list[i]], map_location = device))
         f_data_list.append(torch.stack([torch.from_numpy(f_data_np[i].real).to(torch.float32).to(device),
                                torch.from_numpy(f_data_np[i].imag).to(torch.float32).to(device)],1))
         partial_data_list.append(torch.stack([torch.from_numpy(partial_data_np[i].real).to(torch.float32).to(device),

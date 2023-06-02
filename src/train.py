@@ -97,26 +97,28 @@ if __name__ == '__main__':
     R = 200
     label1 = 'R200'
     label2 = 'R200'
+    scheme = -1
     angle_total = 64
     angle_TYPE = 'P'
     angle_for_test = 4
+    outputsize = 64
     angle_mode = 'uniform'
     NS_return = 'T'
     ntrain = 1024
     ntest = 32
     maxq = 0.1
     FNO_ARG = (12,32,4)
-    train_filename = 'k{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, ntrain, angle_TYPE, angle_for_test,angle_total,
+    train_filename = 'k{}_{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, scheme, ntrain, angle_TYPE, angle_for_test,angle_total,
                                                  angle_mode, qmethod, maxq, NS_return, label1)
-    test_filename = 'k{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, ntest, angle_TYPE, angle_for_test,angle_total,
+    test_filename = 'k{}_{}_{}_{}_{},{},{}_{}_{}_NS{}_{}'.format(k, scheme, ntest, angle_TYPE, angle_for_test,angle_total,
                                              angle_mode, qmethod, maxq, NS_return, label2)
-    NET_name = 'k{}_{}_{},{},{}_{}_{}_NS{}_{}_{},{},{}'.format(k, angle_TYPE, angle_for_test,angle_total,
-                                         angle_mode, qmethod, maxq, NS_return, label2,
-                                         FNO_ARG[0],FNO_ARG[1],FNO_ARG[2])
+    NET_name = 'k{}_{}_{}_{},{},{}_{}_{}_NS{}_{}_{},{},{}'.format(k, scheme, angle_TYPE, angle_for_test,angle_total,
+                                             angle_mode, qmethod, maxq, NS_return, label2,
+                                             FNO_ARG[0],FNO_ARG[1],FNO_ARG[2])
     q_train, wave_train, u_train0, u_train1 = load_data(train_filename, device = device,
-                    NS_return = NS_return, Usage = 'Train')
+                    NS_return = NS_return, Usage = 'Train',output_size = outputsize)
     q_test, wave_test, u_test0, u_test1 = load_data(test_filename, device = device,
-                        NS_return = NS_return, Usage = 'Train')
+                        NS_return = NS_return, Usage = 'Train',output_size = outputsize)
     x_train,x_test = (q_train,wave_train),(q_test,wave_test)
     y_train,y_test = (u_train0,u_train1),(u_test0,u_test1)
 
