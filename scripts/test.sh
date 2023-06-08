@@ -3,12 +3,13 @@
 
 N=64
 N_comp='64'
-k='20'
+k='40'
 m=32
-maxq=0.4
+maxq=0.3
 q_method='TEST'
 noise_level=0.0
 bd_num=2
+scheme='PML'
 # 以上是一些预设，可设置为benchmark
 
 ARGNAME='k'  
@@ -36,6 +37,7 @@ Opt () {
     --forward_solver $2 \
     --title ${TITLE} \
     --bd_num ${bd_num} \
+    --scheme ${scheme} \
     --output_filename ${OUTPUT_LOG} \
     >> ${TMP_PATH} 2>&1 &&
     python -u ${WRITE_PATH} \
@@ -59,13 +61,22 @@ echo > ${OUTPUT_LOG} &&
 
 Opt '40' 'MUMPS' 512 '128' '15' 'F' 3 &&
 Opt '40' 'NET' 512 '64' '15' 'T' 3 &&
-Opt '40' 'NET' 512 '64' '15' 'T' 5 &&
-# Opt '20' 'MUMPS' 512 '64' '15' 'F' 3 &&
-# Opt '20' 'NET' 512 '64' '15' 'T' 3 &&
 
+# Opt '0.0' 'MUMPS' 512 '128' '15' 'F' 3 &&
+# Opt '0.0' 'NET' 512 '64' '15' 'T' 3 &&
+# Opt '0.1' 'MUMPS' 512 '128' '15' 'F' 3 &&
+# Opt '0.1' 'NET' 512 '64' '15' 'T' 3 &&
+# Opt '0.2' 'MUMPS' 512 '128' '15' 'F' 3 &&
+# Opt '0.2' 'NET' 512 '64' '15' 'T' 3 &&
+# Opt '0.4' 'MUMPS' 512 '128' '15' 'F' 3 &&
+# Opt '0.4' 'NET' 512 '64' '15' 'T' 3 &&
 
-# Opt '40,60,80' 'MUMPS,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'F' 3 &&
-# Opt '40,60,80' 'NET,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'T' 3 &&
+# Opt 0.1 'MUMPS,MUMPS' 512 '128,256' '15,10' 'F' 3 &&
+# Opt 0.1 'NET,MUMPS' 512 '64,256' '15,10' 'T' 3 &&
+# Opt 0.2 'MUMPS,MUMPS' 512 '128,256' '15,10' 'F' 3 &&
+# Opt 0.2 'NET,MUMPS' 512 '64,256' '15,10' 'T' 3 &&
+# Opt 0.3 'MUMPS,MUMPS' 512 '128,512' '15,10' 'F' 3 &&
+# Opt 0.3 'NET,MUMPS' 512 '64,512' '15,10' 'T' 3 &&
 
 
 # Opt '20,60,80' 'MUMPS,MUMPS,MUMPS' 512 '64,128,256' '15,10,5' 'F' 3 &&

@@ -1,28 +1,25 @@
 
-Boundary data preparing  2023-05-28 00:16:48
-Boundary data prepared   2023-05-28 00:16:52
+Boundary data preparing  2023-06-06 22:26:54
+Boundary data prepared   2023-06-06 22:26:58
 ********************************************
-Process 0                2023-05-28 00:16:52
-iter 1  completed        2023-05-28 00:16:53
-iter 2  completed        2023-05-28 00:16:53
-iter 3  completed        2023-05-28 00:16:53
-iter 4  completed        2023-05-28 00:16:54
-iter 5  completed        2023-05-28 00:16:54
-iter 6  completed        2023-05-28 00:16:54
-iter 7  completed        2023-05-28 00:16:55
-iter 8  completed        2023-05-28 00:16:55
-iter 9  completed        2023-05-28 00:16:55
-iter 10 completed        2023-05-28 00:16:55
-iter 11 completed        2023-05-28 00:16:56
-iter 12 completed        2023-05-28 00:16:56
-iter 13 completed        2023-05-28 00:16:58
-iter 14 completed        2023-05-28 00:17:00
+Process 0                2023-06-06 22:26:59
+iter 1  completed        2023-06-06 22:27:00
+iter 2  completed        2023-06-06 22:27:00
+iter 3  completed        2023-06-06 22:27:00
+iter 4  completed        2023-06-06 22:27:00
+iter 5  completed        2023-06-06 22:27:01
+iter 6  completed        2023-06-06 22:27:01
+iter 7  completed        2023-06-06 22:27:01
+iter 8  completed        2023-06-06 22:27:01
+iter 9  completed        2023-06-06 22:27:01
+iter 10 completed        2023-06-06 22:27:02
+iter 11 completed        2023-06-06 22:27:02
+iter 12 completed        2023-06-06 22:27:02
+iter 13 completed        2023-06-06 22:27:02
+iter 14 completed        2023-06-06 22:27:03
+iter 15 completed        2023-06-06 22:27:03
 ********************************************
  This problem is unconstrained.
-
- Warning:  more than 10 function and gradient
-   evaluations in the last line search.  Termination
-   may possibly be caused by a bad search direction.
 RUNNING THE L-BFGS-B CODE
 
            * * *
@@ -32,35 +29,37 @@ Machine precision = 2.220D-16
 
 At X0         0 variables are exactly at the bounds
 
-At iterate    0    f=  7.06340D+01    |proj g|=  2.78712D-01
+At iterate    0    f=  4.24563D+01    |proj g|=  2.23926D-01
 
-At iterate    1    f=  5.57044D+01    |proj g|=  2.58562D-01
+At iterate    1    f=  3.00700D+01    |proj g|=  1.85211D-01
 
-At iterate    2    f=  4.21166D+01    |proj g|=  2.18418D-01
+At iterate    2    f=  7.52984D+00    |proj g|=  6.80973D-02
 
-At iterate    3    f=  8.94174D+00    |proj g|=  7.45097D-02
+At iterate    3    f=  2.30541D+00    |proj g|=  3.26807D-02
 
-At iterate    4    f=  3.18137D+00    |proj g|=  5.62050D-02
+At iterate    4    f=  1.19600D+00    |proj g|=  2.59664D-02
 
-At iterate    5    f=  2.29928D+00    |proj g|=  3.65501D-02
+At iterate    5    f=  8.35009D-01    |proj g|=  1.96517D-02
 
-At iterate    6    f=  1.46884D+00    |proj g|=  2.43110D-02
+At iterate    6    f=  3.76322D-01    |proj g|=  7.86732D-03
 
-At iterate    7    f=  6.54863D-01    |proj g|=  1.05471D-02
+At iterate    7    f=  2.15425D-01    |proj g|=  5.45945D-03
 
-At iterate    8    f=  5.36414D-01    |proj g|=  1.39335D-02
+At iterate    8    f=  1.76059D-01    |proj g|=  6.23707D-03
 
-At iterate    9    f=  3.34305D-01    |proj g|=  5.90069D-03
+At iterate    9    f=  1.34471D-01    |proj g|=  2.78577D-03
 
-At iterate   10    f=  2.81797D-01    |proj g|=  5.22274D-03
+At iterate   10    f=  1.17567D-01    |proj g|=  2.06145D-03
 
-At iterate   11    f=  2.50718D-01    |proj g|=  4.77061D-03
+At iterate   11    f=  1.01551D-01    |proj g|=  1.83390D-03
 
-At iterate   12    f=  2.43950D-01    |proj g|=  4.77658D-03
+At iterate   12    f=  9.27092D-02    |proj g|=  3.15234D-03
 
-At iterate   13    f=  2.43177D-01    |proj g|=  4.91737D-03
+At iterate   13    f=  8.64112D-02    |proj g|=  1.54245D-03
 
-At iterate   14    f=  2.43174D-01    |proj g|=  4.91313D-03
+At iterate   14    f=  8.34597D-02    |proj g|=  9.99452D-04
+
+At iterate   15    f=  8.07961D-02    |proj g|=  1.11691D-03
 
            * * *
 
@@ -75,7 +74,7 @@ F     = final function value
            * * *
 
    N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
-*****     14     32      1     0     0   4.913D-03   2.432D-01
-  F =  0.24317370130575755     
+*****     15     17      1     0     0   1.117D-03   8.080D-02
+  F =   8.0796136097436119E-002
 
-CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH             
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT                 

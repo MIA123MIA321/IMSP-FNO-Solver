@@ -92,12 +92,12 @@ def train(x_train,y_train,x_test,y_test,device,model_pth='',name='',
         torch.save(model,NET_DIR + name + '.pth')
         
 if __name__ == '__main__':
-    k = 20
+    k = 40
     qmethod = 'G'
     R = 200
     label1 = 'R200'
     label2 = 'R200'
-    scheme = -1
+    scheme = 'ABC'
     angle_total = 64
     angle_TYPE = 'P'
     angle_for_test = 4

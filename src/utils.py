@@ -45,7 +45,11 @@ heatmap_params = {
     'xticklabels': False,
     'yticklabels': False
 }
-
+heatmap_params = {
+    'cmap': 'viridis',
+    'xticklabels': False,
+    'yticklabels': False
+}
 def count_params(model):
     c = 0
     for p in list(model.parameters()):
@@ -177,16 +181,23 @@ def Error(a, a_truth):
     return tmp / np.linalg.norm(a_truth, ord=2)
 
 
-def Round(vector, times):
+def Round(vector, times, method = 1):
+    assert method == 1 or method ==2
     if times == 0.0:
         return vector
     else:
         SHAPE = vector.shape
         vector1 = vector.reshape(-1,)
         SHAPE1 = vector1.shape[0]
-        ERR = np.array([random.uniform(-times, times)
-                        for i in range(SHAPE1)])
-        return vector + ERR.reshape(SHAPE)* vector
+        if method == 1:
+            ERR = np.array([random.uniform(-times, times)
+                            for i in range(SHAPE1)])
+            return vector + ERR.reshape(SHAPE)* vector
+        else:
+            R = 0.5*(np.max(vector1)-np.min(vector1))
+            ERR = np.array([random.uniform(-R*times, R*times)
+                            for i in range(SHAPE1)])
+            return vector + ERR.reshape(SHAPE)
 
 
 def load_data(filename, device = 'cpu',angle_id = -1,

@@ -20,7 +20,7 @@ parser.add_argument('--output_filename', type = str, required=True)
 parser.add_argument('--NS_length', type = int, default = 3)
 parser.add_argument('--load_boundary', type = str, default = 'F')
 parser.add_argument('--bd_num', type = int, default = 4)
-parser.add_argument('--scheme', type = int, default = -1)
+parser.add_argument('--scheme', type = str, default = 'PML')
 args = parser.parse_args()
 print('Boundary data preparing'+'  '+str(datetime.now())[:-7])
 PROJECT_DIR = args.PROJECT_DIR
@@ -49,8 +49,8 @@ Netdir = PROJECT_DIR + 'Network/'
 DATApath = PROJECT_DIR + 'Dataset/tmp_boundary.npz'
 suffix = dict()
 suffix[20] = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
-suffix[40] = '_P,4,64_uniform_G_NS0.1_T_R200,12,32_1.pth'
-suffix[80] = '_P_8,64,uniform_G_0.1_NST_R200_30,64,4_5.pth'
+suffix[40] = '_P_4,64,uniform_G_0.1_NST_R200_12,32,4_1.pth'
+suffix[80] = '_P_8,64,uniform_G_0.1_NST_R200_30,64,4_0.pth'
 pic_list = [0, 1, 2, 5, -2, -1]
 if isinstance(k+'',str):
     tmp_k = k.split(',')
@@ -140,6 +140,7 @@ print('%s' % str(datetime.now())[:-7], file = fp)
 print('Solver={}'.format(forward_solver), file = fp)
 print('N={}  N_comp={}  m={}  k={}'.format(N, N_comp, m, k), file = fp)
 print('q_method={}  maxq={}  max_iter={}'.format(q_method, maxq, maxiter), file = fp)
+print('bd_num={}  scheme={}'.format(bd_num,scheme), file = fp)
 print('gtol={}  noise_level={}'.format(gtol, noise_level), file = fp)
 print('-----------------------------', file = fp)
 print('relative_model_error:', file = fp)

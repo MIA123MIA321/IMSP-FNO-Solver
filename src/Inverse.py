@@ -14,7 +14,7 @@ def data_gen(Q_gen, N_gen, k_list, m, noise_level,scheme,bd_num,expand_times):
         for i in range(m):
             tmp_u = Matrix_solve(Q_gen * f_data[j, i].reshape(-1,),
                                  False,scheme=scheme,expand_times=expand_times)
-            partial_data[j, i] = Round(data_projection(tmp_u,True,bd_num), noise_level)
+            partial_data[j, i] = Round(data_projection(tmp_u,True,bd_num), noise_level,1)
     return f_data, partial_data
 
 def J_MUMPS(Q, N, N_comp, k, f_data, partial_data, device, scheme, bd_num, expand_times, return_grad = True):

@@ -9,7 +9,7 @@ class Datasets:
                  angle_TYPE = 'P', angle_total = 64,
                  angle_for_test = 1, angle_mode = 'first',
                  NS_return = 'T', NS_length = 3,
-                 scheme = 5):
+                 scheme = 'PML'):
         '''
         angle_TYPE = 'P' : Plane wave with frequency k
         angle_TYPE = 'O' : One
@@ -27,12 +27,9 @@ class Datasets:
         self.GAUSS = dict(num = 6, left = 0.1, right = 0.9, R = R)
         self.ANGLE = dict(TYPE = angle_TYPE, total = angle_total, mode = angle_mode)
         self.expand_times = 2
+        self.thickness = 0.05
         self.times = self.comp_grid // self.out_grid
         self.scheme = scheme
-        if self.k >= 20:
-            self.thickness = 0.25
-        else:
-            self.thickness = 0.5
         if self.ANGLE['TYPE'] == 'P':
             self.ANGLE['ntest'] = angle_for_test
         elif self.ANGLE['TYPE'] == 'O':
@@ -174,13 +171,13 @@ class Datasets:
         
 if __name__ == '__main__':                           
     nsample = 1024
-    k = 40
-    scheme = -1
+    k = 80
+    scheme = 'PML'
     qmethod = 'G'
     R = 200
     label = 'R200'
     angle_TYPE = 'P'
-    angle_for_test = 4
+    angle_for_test = 8
     angle_mode = 'uniform'
     maxq = 0.1
     comp_grid = 512

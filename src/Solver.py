@@ -145,7 +145,7 @@ def Matrix_Gen_9(N, Q, k):
     return mat
 
 
-def Matrix_PML(N,Q,k,thickness=0.25,constant=1.79, gamma = 2.8):   
+def Matrix_PML(N,Q,k,thickness=0.05,constant=1.79*10, gamma = 2.8):   
     h = 1/N
     N_PML = int(N*thickness)
     N_total = N + 2*N_PML
@@ -228,11 +228,11 @@ def Matrix_PML(N,Q,k,thickness=0.25,constant=1.79, gamma = 2.8):
 
 
 
-def Matrix_Gen(N, Q, k,scheme = 5,expand_times=1,thickness = 0.25,ToTensor=False,Transpose=False):
-    assert scheme==5 or scheme==9 or scheme ==-1
-    if scheme == 5:
+def Matrix_Gen(N, Q, k,scheme = 'ABC',expand_times=1,thickness = 0.05,ToTensor=False,Transpose=False):
+    assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
+    if scheme == 'ABC':
         mat = Matrix_Gen_5(N,Q,k,expand_times)
-    elif scheme == -1:
+    elif scheme == 'PML':
         mat = Matrix_PML(N,Q,k,thickness)
     else:
         mat = Matrix_Gen_9(N,Q,k)
@@ -265,10 +265,10 @@ def F_laplacian(F):
     return f1.reshape(-1)
 
     
-def Matrix_analysis(N, k = 2, scheme = 5, expand_times = 1,thickness = 0.25):
+def Matrix_analysis(N, k = 2, scheme = 'ABC', expand_times = 1,thickness = 0.05):
     global ctx
-    assert scheme==5 or scheme==9 or scheme==-1
-    if scheme!=-1:
+    assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
+    if scheme!='PML':
         Q = np.zeros((N * expand_times+1) ** 2,)
         _Matrix_ = Matrix_Gen(N * expand_times, Q, k,scheme,expand_times=expand_times)
     else:
@@ -281,11 +281,11 @@ def Matrix_analysis(N, k = 2, scheme = 5, expand_times = 1,thickness = 0.25):
     ctx.run(job = 1)
 
 
-def Matrix_factorize(N, k, Q = None,scheme = 5,expand_times = 1,thickness=0.25):
+def Matrix_factorize(N, k, Q = None,scheme = 'ABC',expand_times = 1,thickness=0.05):
     # Q:((N+1)**2,)
     global ctx
-    assert scheme==5 or scheme==9 or scheme==-1
-    if scheme!=-1:
+    assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
+    if scheme!='PML':
         if Q is None:
             Q = np.zeros((N * expand_times+1) ** 2,)
         else:
@@ -300,21 +300,21 @@ def Matrix_factorize(N, k, Q = None,scheme = 5,expand_times = 1,thickness=0.25):
     return
 
 
-def Matrix_solve(F: np.ndarray, one_dim = True,scheme=5,expand_times=1,thickness=0.25):
+def Matrix_solve(F: np.ndarray, one_dim = True,scheme='ABC',expand_times=1,thickness=0.05):
     # F:((N+1)**2,) --> ((N+1)**2,)
     global ctx
-    assert scheme==5 or scheme==9 or scheme==-1
+    assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
     M = int(np.sqrt(F.shape[0]))
     N = M-1
     h = 1/N
     N_PML = int(N*thickness)
     N_total = N + 2*N_PML
-    if scheme!=-1:
+    if scheme!='PML':
         F = expand_grids(F.reshape(M,M),expand_times).reshape(-1,)
     else:
         F = np.pad(F.reshape(M,M),N_PML)
         F = h*h/3*(F[2:,1:-1]+F[:-2,1:-1]+F[1:-1,2:]+F[1:-1,:-2]-F[1:-1,1:-1]).reshape(-1,)
-    if scheme == 9:
+    if scheme == 'ABC9':
         F = F + F_laplacian(F)/12
     F = np.append(F.real, F.imag)
     _Right_ = F
@@ -322,7 +322,7 @@ def Matrix_solve(F: np.ndarray, one_dim = True,scheme=5,expand_times=1,thickness
     ctx.set_rhs(x)
     ctx.run(job = 3)
     tmp = x.reshape(-1, )
-    if scheme!=-1:
+    if scheme!='PML':
         output = tmp[:((M-1)*expand_times+1)**2] + 1j * tmp[((M-1)*expand_times+1)**2:]
         output = squeeze_grids(output,expand_times,one_dim)
     else:
