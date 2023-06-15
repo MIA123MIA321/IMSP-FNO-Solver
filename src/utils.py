@@ -108,33 +108,6 @@ class LpLoss(object):
         return self.rel(x, y)
 
 
-# def Diag_Gen(N, Q, k):
-#     M = N + 1
-#     diag0 = k * k * (1 + Q) - 4 * N * N+1j*2*k*N
-#     matrix__ = diag0.reshape((M, M))
-#     matrix__[0, 0]+=1j*2*k*N
-#     matrix__[0, -1]+=1j*2*k*N
-#     matrix__[-1, 0]+=1j*2*k*N
-#     matrix__[-1, -1]+=1j*2*k*N
-#     diag = matrix__.reshape(-1,)
-#     return torch.from_numpy(diag).to(torch.complex64)
-
-
-# def forward_conv(N,k,input_,padding = False):
-#     kernel = torch.tensor([
-#     [0.,   N*N,                0.],
-#     [N*N,  k*k-4*N*N, N*N],
-#     [0.,   N*N,                0.]]).to(input_.device)
-#     kernel = kernel.unsqueeze(0).unsqueeze(0)
-#     output_real = F.conv2d(input_[:,0].unsqueeze(1),kernel,stride=1,padding=0)
-#     output_imag = F.conv2d(input_[:,1].unsqueeze(1),kernel,stride=1,padding=0)
-#     output_ = torch.cat([output_real,output_imag],dim=1)
-#     if padding:
-#         return F.pad(output_,[1,1,1,1])
-#     else:
-#         return output_
-
-
 def expand_grids(q,expand_times=1):
     # N \times N --> N*expand_times \times N*expand_times
     N = q.shape[0]
@@ -342,76 +315,87 @@ def plot_heatmap(q_list,title,picdir,gifdir,
     
 def INTERPOLATE(x, in_size, out_size):
     if isinstance(x, np.ndarray):
-        x = x.reshape((in_size + 1, in_size + 1))
+        tmp_shape = int(np.prod(x.shape)/(in_size+1)**2)
+        x1 = x.reshape((tmp_shape, in_size + 1, in_size + 1))
         l_in = np.linspace(0, 1, in_size + 1)
         l_out = np.linspace(0, 1, out_size + 1)
-        if np.isrealobj(x):
-            output = interp2d(l_in, l_in, x, kind='cubic')(l_out, l_out)
-            return output
+        if np.isrealobj(x1):
+            output = np.zeros((tmp_shape, out_size + 1, out_size + 1))
+            for i in range(tmp_shape):
+                output[i] = interp2d(l_in, l_in, x1[i], kind='cubic')(l_out, l_out)
         else:
-            output_real = interp2d(l_in, l_in, x.real, kind='cubic')(l_out, l_out)
-            output_imag = interp2d(l_in, l_in, x.imag, kind='cubic')(l_out, l_out)
-            return (output_real+1j*output_imag)
+            output = np.zeros((tmp_shape, out_size + 1, out_size + 1), dtype = np.complex128)
+            for i in range(tmp_shape):
+                output_real = interp2d(l_in, l_in, x1[i].real, kind='cubic')(l_out, l_out)
+                output_imag = interp2d(l_in, l_in, x1[i].imag, kind='cubic')(l_out, l_out)
+                output[i] = output_real+1j*output_imag
+        return output
     if isinstance(x, torch.Tensor):
         assert x.shape[-1] == in_size + 1
         x_out = F.interpolate(x, size=(out_size + 1, out_size + 1), mode='bicubic', align_corners=True)
         return x_out
 
-    
-def data_projection(x,data_to_boundary = True, bd_num = 4):
-    # opposite sides
+
+def data_projection(x,N,N_rec,data_to_boundary = True, bd_num = 4, bd_type = 'D'):
+    # adjacent sides
+    # x.shape = (N+1)^2 / 4*(N_rec-2*N_buffer_rec-1)
     assert bd_num in [1,2,3,4]
-    if data_to_boundary:
-        x1 = x[...,1:-1,0]
-        x2 = x[...,1:-1,-1]
-        x3 = x[...,0,1:-1]
-        x4 = x[...,-1,1:-1]
-        x_bd = [x1,x2,x3,x4]
-        if isinstance(x, np.ndarray):
-            return np.concatenate(x_bd[0:bd_num])
-        elif isinstance(x, torch.Tensor):
-            return torch.cat(x_bd[0:bd_num],-1)
+    assert bd_type in ['D','N']
+    times = N // N_rec
+    N_buffer = int(N*14/128)
+    N_buffer_rec = int(N_rec*14/128)
+    index = [i*times for i in range(N_buffer_rec+1,N_rec- N_buffer_rec)]
+    if bd_type == 'D':
+        if data_to_boundary:
+            x1 = x[...,:,N_buffer][...,index]
+            x2 = x[...,N_buffer,:][...,index]
+            x3 = x[...,:,-N_buffer-1][...,index]
+            x4 = x[...,-N_buffer-1,:][...,index]
+            x_bd = [x1,x2,x3,x4]
+            if isinstance(x, np.ndarray):
+                return np.concatenate(x_bd[0:bd_num])
+            elif isinstance(x, torch.Tensor):
+                return torch.cat(x_bd[0:bd_num],-1)
+        else:
+            N_int = N_rec - 2 * N_buffer_rec
+            if isinstance(x, np.ndarray):
+                output = np.zeros((N+1,N+1),dtype = np.complex128)
+            elif isinstance(x, torch.Tensor):
+                output = torch.zeros((x.shape[0],x.shape[1],N+1,N+1)).to(x.device)
+            output[...,:,N_buffer][...,index] = x[...,0*(N_int-1):1*(N_int-1)]
+            if bd_num >= 2:
+                output[...,N_buffer,:][...,index] = x[...,1*(N_int-1):2*(N_int-1)]
+            if bd_num >= 3:
+                output[...,:,-N_buffer-1][...,index] = x[...,2*(N_int-1):3*(N_int-1)]
+            if bd_num >= 4:
+                output[...,-N_buffer-1,:][...,index] = x[...,3*(N_int-1):4*(N_int-1)]
+            return output
     else:
-        N = x.shape[-1] // bd_num
-        if isinstance(x, np.ndarray):
-            output = np.zeros((N+2,N+2),dtype = np.complex128)
-        elif isinstance(x, torch.Tensor):
-            output = torch.zeros((x.shape[0],x.shape[1],N+2,N+2))
-        output[...,1:-1,0]  = x[...,0*N:1*N]
-        if bd_num >= 2:
-            output[...,1:-1,-1] = x[...,1*N:2*N]
-        if bd_num >= 3:
-            output[...,0,1:-1]  = x[...,2*N:3*N]
-        if bd_num >= 4:
-            output[...,-1,1:-1] = x[...,3*N:4*N]
-        return output
-
-
-
-# def data_projection(x,data_to_boundary = True, bd_num = 4):
-#     # adjacent sides
-#     assert bd_num in [1,2,3,4]
-#     if data_to_boundary:
-#         x1 = x[...,1:-1,0]
-#         x2 = x[...,0,1:-1]
-#         x3 = x[...,1:-1,-1]
-#         x4 = x[...,-1,1:-1]
-#         x_bd = [x1,x2,x3,x4]
-#         if isinstance(x, np.ndarray):
-#             return np.concatenate(x_bd[0:bd_num])
-#         elif isinstance(x, torch.Tensor):
-#             return torch.cat(x_bd[0:bd_num],-1)
-#     else:
-#         N = x.shape[-1] // bd_num
-#         if isinstance(x, np.ndarray):
-#             output = np.zeros((N+2,N+2),dtype = np.complex128)
-#         elif isinstance(x, torch.Tensor):
-#             output = torch.zeros((x.shape[0],x.shape[1],N+2,N+2))
-#         output[...,1:-1,0]  = x[...,0*N:1*N]
-#         if bd_num >= 2:
-#             output[...,0,1:-1] = x[...,1*N:2*N]
-#         if bd_num >= 3:
-#             output[...,1:-1,-1] = x[...,2*N:3*N]
-#         if bd_num >= 4:
-#             output[...,-1,1:-1] = x[...,3*N:4*N]
-#         return output
+        if data_to_boundary:
+            x1 = (x[...,:,N_buffer-1][...,index]-x[...,:,N_buffer+1][...,index])*N/2
+            x2 = (x[...,N_buffer-1,:][...,index]-x[...,N_buffer+1,:][...,index])*N/2
+            x3 = (x[...,:,-N_buffer][...,index]-x[...,:,-N_buffer-2][...,index])*N/2
+            x4 = (x[...,-N_buffer,:][...,index]-x[...,-N_buffer-2,:][...,index])*N/2
+            x_bd = [x1,x2,x3,x4]
+            if isinstance(x, np.ndarray):
+                return np.concatenate(x_bd[0:bd_num])
+            elif isinstance(x, torch.Tensor):
+                return torch.cat(x_bd[0:bd_num],-1)
+        else:
+            N_int = N_rec - 2 * N_buffer_rec
+            if isinstance(x, np.ndarray):
+                output = np.zeros((N+1,N+1),dtype = np.complex128)
+            elif isinstance(x, torch.Tensor):
+                output = torch.zeros((x.shape[0],x.shape[1],N+1,N+1)).to(x.device)
+            output[...,:,N_buffer-1][...,index]  += x[...,0*(N_int-1):1*(N_int-1)]*N/2
+            output[...,:,N_buffer+1][...,index]  -= x[...,0*(N_int-1):1*(N_int-1)]*N/2
+            if bd_num >= 2:
+                output[...,N_buffer-1,:][...,index] += x[...,1*(N_int-1):2*(N_int-1)]*N/2
+                output[...,N_buffer+1,:][...,index] -= x[...,1*(N_int-1):2*(N_int-1)]*N/2
+            if bd_num >= 3:
+                output[...,:,-N_buffer][...,index] += x[...,2*(N_int-1):3*(N_int-1)]*N/2
+                output[...,:,-N_buffer-2][...,index] -= x[...,2*(N_int-1):3*(N_int-1)]*N/2
+            if bd_num >= 4:
+                output[...,-N_buffer,:][...,index] += x[...,3*(N_int-1):4*(N_int-1)]*N/2
+                output[...,-N_buffer-2,:][...,index] -= x[...,3*(N_int-1):4*(N_int-1)]*N/2
+            return output

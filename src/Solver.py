@@ -5,21 +5,22 @@ ctx = DMumpsContext()
 ctx.set_silent()
 
 
-def Matrix_Gen_5(N, Q, k, expand_times):
+def Matrix_Gen_5(N, Q, k, expand_times,Transpose=False):
     '''
     data1 : middle
     data2 : middle +- 1
     data3 : middle +- M
     data4 : middle +- M^2
     '''
-    M = N + 1
-    Matrix1 = (k * k * (1 + Q) - 4 * N * N/(expand_times)**2).reshape(M,M)
+    M = N*expand_times + 1
+    Q = expand_grids(Q.reshape(N+1,N+1),expand_times).reshape(-1,)
+    Matrix1 = (k * k * (1 + Q) - 4 * N * N).reshape(M,M)
     data1 = np.tile(Matrix1.reshape(-1,),2)
     
     Matrix2_plus = np.ones((M,M))
     Matrix2_plus[:,0] = 0
     Matrix2_plus[:,1] = 2
-    Matrix2_plus *= N * N/(expand_times)**2
+    Matrix2_plus *= N * N
     data2_plus = np.tile(Matrix2_plus.reshape(-1,),2)
     Matrix2_minus = Matrix2_plus[:,::-1]
     data2_minus = np.tile(Matrix2_minus.reshape(-1,),2)
@@ -32,16 +33,22 @@ def Matrix_Gen_5(N, Q, k, expand_times):
     Matrix4 = np.ones((M, M))
     Matrix4[0, 0] = Matrix4[-1, 0] = Matrix4[-1, -1] = Matrix4[0, -1] = 2
     Matrix4[1:-1, 1:-1] = 0
-    Matrix4 *= 2 * k * N/(expand_times)
+    Matrix4 *= 2 * k * N
     data4_minus = np.tile(Matrix4.reshape(-1), 2)
     data4_plus = -data4_minus
-    
-    data = (np.c_[data1,data2_minus,data2_plus,
+    if Transpose:
+        data = (np.c_[data1,data2_minus,data2_plus,
+                data3_minus,data3_plus,data4_plus,
+                data4_minus]).transpose()
+    else:
+        data = (np.c_[data1,data2_minus,data2_plus,
             data3_minus,data3_plus,data4_minus,
             data4_plus]).transpose()
     offsets = np.array([0, -1, 1, -M, M, -M * M, M * M])
     dia = dia_matrix((data, offsets), shape=(2 * M * M, 2 * M * M))
     mat = dia.tocoo()
+    if Transpose:
+        mat = mat.T
     return mat
 
 
@@ -119,7 +126,7 @@ def Matrix_Gen_9(N, Q, k):
     data9_minus = - data7_minus
     data10_plus = - data8_plus
     data10_minus = -data8_minus
-    
+
     data = (np.c_[data1,
                   data2_plus,data2_minus,
                   data3_plus,data3_minus,
@@ -145,8 +152,9 @@ def Matrix_Gen_9(N, Q, k):
     return mat
 
 
-def Matrix_PML(N,Q,k,thickness=0.05,constant=1.79*10, gamma = 2.8):   
+def Matrix_PML(N,Q,k,thickness=0.05, gamma = 2.8,Transpose=False):   
     h = 1/N
+    constant = k
     N_PML = int(N*thickness)
     N_total = N + 2*N_PML
     M = N_total-1
@@ -197,15 +205,26 @@ def Matrix_PML(N,Q,k,thickness=0.05,constant=1.79*10, gamma = 2.8):
     M8[-1] *= 0
     M8[:,-1] *= 0
     m8 = np.tile(M8.reshape(-1,),2)[M*M-M-1:M*M-M-1+M*M]
-    data = (np.c_[np.tile(m0,2).real,np.tile(m1,2).real,np.tile(m2,2).real,
-                  np.tile(m3,2).real,np.tile(m4,2).real,np.tile(m5,2).real,
-                  np.tile(m6,2).real,np.tile(m7,2).real,np.tile(m8,2).real,
-                  np.tile(m0,2).imag,np.tile(m1,2).imag,np.tile(m2,2).imag,
-                  np.tile(m3,2).imag,np.tile(m4,2).imag,np.tile(m5,2).imag,
-                  np.tile(m6,2).imag,np.tile(m7,2).imag,np.tile(m8,2).imag,
-                  -np.tile(m0,2).imag,-np.tile(m1,2).imag,-np.tile(m2,2).imag,
-                  -np.tile(m3,2).imag,-np.tile(m4,2).imag,-np.tile(m5,2).imag,
-                  -np.tile(m6,2).imag,-np.tile(m7,2).imag,-np.tile(m8,2).imag]).transpose()
+    if Transpose:
+        data = (np.c_[np.tile(m0,2).real,np.tile(m1,2).real,np.tile(m2,2).real,
+                      np.tile(m3,2).real,np.tile(m4,2).real,np.tile(m5,2).real,
+                      np.tile(m6,2).real,np.tile(m7,2).real,np.tile(m8,2).real,
+                      np.tile(m0,2).imag,np.tile(m1,2).imag,np.tile(m2,2).imag,
+                      np.tile(m3,2).imag,np.tile(m4,2).imag,np.tile(m5,2).imag,
+                      np.tile(m6,2).imag,np.tile(m7,2).imag,np.tile(m8,2).imag,
+                      -np.tile(m0,2).imag,-np.tile(m1,2).imag,-np.tile(m2,2).imag,
+                      -np.tile(m3,2).imag,-np.tile(m4,2).imag,-np.tile(m5,2).imag,
+                      -np.tile(m6,2).imag,-np.tile(m7,2).imag,-np.tile(m8,2).imag]).transpose()
+    else:
+        data = (np.c_[np.tile(m0,2).real,np.tile(m1,2).real,np.tile(m2,2).real,
+              np.tile(m3,2).real,np.tile(m4,2).real,np.tile(m5,2).real,
+              np.tile(m6,2).real,np.tile(m7,2).real,np.tile(m8,2).real,
+              -np.tile(m0,2).imag,-np.tile(m1,2).imag,-np.tile(m2,2).imag,
+              -np.tile(m3,2).imag,-np.tile(m4,2).imag,-np.tile(m5,2).imag,
+              -np.tile(m6,2).imag,-np.tile(m7,2).imag,-np.tile(m8,2).imag,
+              np.tile(m0,2).imag,np.tile(m1,2).imag,np.tile(m2,2).imag,
+              np.tile(m3,2).imag,np.tile(m4,2).imag,np.tile(m5,2).imag,
+              np.tile(m6,2).imag,np.tile(m7,2).imag,np.tile(m8,2).imag]).transpose()
     offsets = np.array([0,
                         -M, M,
                         -1, 1,
@@ -223,21 +242,21 @@ def Matrix_PML(N,Q,k,thickness=0.05,constant=1.79*10, gamma = 2.8):
                         -M*M-M + 1, -M*M+M + 1])
     dia = dia_matrix((data, offsets), shape=(2 * M * M, 2 * M * M))
     mat = dia.tocoo()
+    if Transpose:
+        mat = mat.T
     return mat
 
 
 
 
-def Matrix_Gen(N, Q, k,scheme = 'ABC',expand_times=1,thickness = 0.05,ToTensor=False,Transpose=False):
+def Matrix_Gen(N, Q, k,scheme = 'ABC',expand_times=2,thickness = 0.05,ToTensor=False,Transpose=False):
     assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
     if scheme == 'ABC':
-        mat = Matrix_Gen_5(N,Q,k,expand_times)
+        mat = Matrix_Gen_5(N,Q,k,expand_times,Transpose)
     elif scheme == 'PML':
-        mat = Matrix_PML(N,Q,k,thickness)
+        mat = Matrix_PML(N,Q,k,thickness,Transpose)
     else:
         mat = Matrix_Gen_9(N,Q,k)
-    if Transpose:
-        mat = mat.T
     if not ToTensor:
         return mat
     else:
@@ -265,15 +284,14 @@ def F_laplacian(F):
     return f1.reshape(-1)
 
     
-def Matrix_analysis(N, k = 2, scheme = 'ABC', expand_times = 1,thickness = 0.05):
+def Matrix_analysis(N, k = 2, scheme = 'ABC', expand_times = 2,thickness = 0.05,Transpose=False):
     global ctx
     assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
+    Q = np.zeros((N+1) ** 2,)
     if scheme!='PML':
-        Q = np.zeros((N * expand_times+1) ** 2,)
-        _Matrix_ = Matrix_Gen(N * expand_times, Q, k,scheme,expand_times=expand_times)
-    else:
-        Q = np.zeros((N+1) ** 2,)
-        _Matrix_ = Matrix_Gen(N, Q, k,scheme,thickness=thickness)
+        _Matrix_ = Matrix_Gen(N, Q, k, scheme, expand_times=expand_times, Transpose=Transpose)
+    else:      
+        _Matrix_ = Matrix_Gen(N, Q, k, scheme, thickness=thickness, Transpose=Transpose)
     ctx.set_shape(_Matrix_.shape[0])
     if ctx.myid == 0:
         ctx.set_centralized_assembled_rows_cols(
@@ -281,26 +299,22 @@ def Matrix_analysis(N, k = 2, scheme = 'ABC', expand_times = 1,thickness = 0.05)
     ctx.run(job = 1)
 
 
-def Matrix_factorize(N, k, Q = None,scheme = 'ABC',expand_times = 1,thickness=0.05):
+def Matrix_factorize(N, k, Q = None,scheme = 'ABC',expand_times = 2,thickness=0.05,Transpose=False):
     # Q:((N+1)**2,)
     global ctx
     assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
+    if Q is None:
+        Q = np.zeros((N +1) ** 2,)
     if scheme!='PML':
-        if Q is None:
-            Q = np.zeros((N * expand_times+1) ** 2,)
-        else:
-            Q = expand_grids(Q.reshape(N+1,N+1),expand_times).reshape(-1,)
-        _Matrix_ = Matrix_Gen(N*expand_times, Q, k, scheme,expand_times)
+        _Matrix_ = Matrix_Gen(N, Q, k, scheme, expand_times, Transpose=Transpose)
     else:
-        if Q is None:
-            Q = np.zeros((N+1) ** 2,)
-        _Matrix_ = Matrix_Gen(N, Q, k,scheme,thickness=thickness)
+        _Matrix_ = Matrix_Gen(N, Q, k, scheme, thickness=thickness, Transpose=Transpose)
     ctx.set_centralized_assembled_values(_Matrix_.data)
     ctx.run(job = 2)
     return
 
 
-def Matrix_solve(F: np.ndarray, one_dim = True,scheme='ABC',expand_times=1,thickness=0.05):
+def Matrix_solve(F: np.ndarray, one_dim = True,scheme='ABC',expand_times=2,thickness=0.05,Transpose=False):
     # F:((N+1)**2,) --> ((N+1)**2,)
     global ctx
     assert scheme=='ABC' or scheme=='ABC9' or scheme=='PML'
@@ -313,7 +327,10 @@ def Matrix_solve(F: np.ndarray, one_dim = True,scheme='ABC',expand_times=1,thick
         F = expand_grids(F.reshape(M,M),expand_times).reshape(-1,)
     else:
         F = np.pad(F.reshape(M,M),N_PML)
-        F = h*h/3*(F[2:,1:-1]+F[:-2,1:-1]+F[1:-1,2:]+F[1:-1,:-2]-F[1:-1,1:-1]).reshape(-1,)
+        if not Transpose:
+            F = h*h/3*(F[2:,1:-1]+F[:-2,1:-1]+F[1:-1,2:]+F[1:-1,:-2]-F[1:-1,1:-1]).reshape(-1,)
+        else:
+            F = F[1:-1,1:-1]
     if scheme == 'ABC9':
         F = F + F_laplacian(F)/12
     F = np.append(F.real, F.imag)
@@ -327,7 +344,10 @@ def Matrix_solve(F: np.ndarray, one_dim = True,scheme='ABC',expand_times=1,thick
         output = squeeze_grids(output,expand_times,one_dim)
     else:
         output = (tmp[:(N_total-1)**2] + 1j * tmp[(N_total-1)**2:]).reshape((N_total-1),(N_total-1))
-        output = np.pad(output,1)[N_PML:-N_PML,N_PML:-N_PML]
+        output = np.pad(output,1)
+        if Transpose:
+            output[1:-1,1:-1] = (h*h)/3*(output[2:,1:-1]+output[:-2,1:-1]+output[1:-1,2:]+output[1:-1,:-2]-output[1:-1,1:-1])
+        output = output[N_PML:-N_PML,N_PML:-N_PML]
         if one_dim:
             output = output.reshape(-1,)
     return output

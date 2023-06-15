@@ -24,12 +24,14 @@ class Datasets:
         self.R = R
         self.T = dict(value1 = 0.1, value2 = -0.1,
                       direct = 0, left = 0.2, right = 0.8)
-        self.GAUSS = dict(num = 6, left = 0.1, right = 0.9, R = R)
+        self.GAUSS = dict(num = 6, left = 0.2, right = 0.8, R = R)
         self.ANGLE = dict(TYPE = angle_TYPE, total = angle_total, mode = angle_mode)
         self.expand_times = 2
         self.thickness = 0.05
         self.times = self.comp_grid // self.out_grid
         self.scheme = scheme
+        self.N_buffer = int(self.comp_grid*14/128)
+        self.N_int = self.comp_grid - 2*self.N_buffer
         if self.ANGLE['TYPE'] == 'P':
             self.ANGLE['ntest'] = angle_for_test
         elif self.ANGLE['TYPE'] == 'O':
@@ -42,14 +44,16 @@ class Datasets:
         ans = np.zeros((self.nsample, 1, self.comp_grid + 1, self.comp_grid + 1))
         if self.qmethod == 'T':
             for i in range(self.nsample):
-                Q_tmp = generate_t_shape(self.comp_grid, self.T['value1'], self.T['value2'],
+                Q_tmp = generate_t_shape(self.N_int, self.T['value1'], self.T['value2'],
                                          self.T['direct'], self.T['left'], self.T['right'])
+                Q_tmp = np.pad(Q_tmp,self.N_buffer)
                 ans[i,0] = self.maxq * Q_tmp / (abs(Q_tmp).max())
         elif self.qmethod == 'G':
             for i in range(self.nsample):
-                Q_total = generate_gauss_shape(self.comp_grid, self.GAUSS['R'], self.GAUSS['num'],
+                Q_tmp = generate_gauss_shape(self.N_int, self.GAUSS['R'], self.GAUSS['num'],
                                                self.GAUSS['left'], self.GAUSS['right'])
-                ans[i,0] = self.maxq * Q_total / (abs(Q_total).max())
+                Q_tmp = np.pad(Q_tmp,self.N_buffer)
+                ans[i,0] = self.maxq * Q_tmp / (abs(Q_tmp).max())
         return ans
     
     def wave_gen(self, return_mode = 'comp'):
@@ -171,13 +175,13 @@ class Datasets:
         
 if __name__ == '__main__':                           
     nsample = 1024
-    k = 80
-    scheme = 'PML'
+    k = 40
+    scheme = 'ABC'
     qmethod = 'G'
     R = 200
     label = 'R200'
     angle_TYPE = 'P'
-    angle_for_test = 8
+    angle_for_test = 4
     angle_mode = 'uniform'
     maxq = 0.1
     comp_grid = 512
